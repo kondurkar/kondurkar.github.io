@@ -11,6 +11,9 @@
 	<!-- Mobile Specific Meta -->
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
+	<!-- Fonts -->
+	<link href='https://fonts.googleapis.com/css?family=Agbalumo' rel='stylesheet'>
+	<link href='https://fonts.googleapis.com/css?family=Diphylleia' rel='stylesheet'>
 	<!-- Stylesheets -->
 	<link rel="stylesheet" href="css/reset.css" />
 	<link rel="stylesheet" href="css/styles.css" />
@@ -26,7 +29,7 @@
 
 		$(document).ready(function () {
 			$("#countdown").countdown({
-				date: "17 december 2023 12:00:00",
+				date: "17 december 2023 10:02:00",
 				format: "on"
 			},
 
@@ -44,21 +47,31 @@
 
 	<!-- TIMER -->
 	<div class="timer-area">
-		<h1>Yogesh & Rasika Wedding</h1>
-		<ul id="countdown">
-			<li> <span class="days">00</span>
-				<p class="timeRefDays">days</p>
-			</li>
-			<li> <span class="hours">00</span>
-				<p class="timeRefHours">hours</p>
-			</li>
-			<li> <span class="minutes">00</span>
-				<p class="timeRefMinutes">minutes</p>
-			</li>
-			<li> <span class="seconds">00</span>
-				<p class="timeRefSeconds">seconds</p>
-			</li>
-		</ul>
+		<div class="inner-timer-area">
+			<div class="text-box-top">
+				<h2>WE ARE GETTING MARRIED</h2>
+				<h1>YOGESH & RASIKA</h1>
+			</div>
+			<ul id="countdown">
+				<li> <span class="days">00</span>
+					<p class="timeRefDays">days</p>
+				</li>
+				<li> <span class="hours">00</span>
+					<p class="timeRefHours">hours</p>
+				</li>
+				<li> <span class="minutes">00</span>
+					<p class="timeRefMinutes">minutes</p>
+				</li>
+				<li> <span class="seconds">00</span>
+					<p class="timeRefSeconds">seconds</p>
+				</li>
+			</ul>
+			<div class="text-box-bottom">
+				<h3>SAVE THE DATE</h3>
+				<br />
+				<h3>17 DECEMBER 2023</h3>
+			</div>
+		</div>
 	</div>
 	<!-- end timer-area -->
 

@@ -11,7 +11,7 @@
 /* ---------- TYPOGRAPHY ---------- */
 body {
   font: 1em/1.5em "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
-  color: #1f2225;
+  color: #fff;
 }
 p a {
   color: #2a9ccc;
@@ -19,18 +19,22 @@ p a {
 p a:hover {
   color: #1f2225;
 }
-h1,
-h2 {
-  font-family: Georgia, serif;
-  margin-bottom: 1em;
+h1 {
+  font-family: 'Agbalumo';
+  font-size: 22px;
+}
+h2,
+h3,
+h4 {
+  font-family: 'Diphylleia';
 }
 h1 {
   font-size: 2em;
-  line-height: 3em;
+  line-height: 2em;
 }
 h2 {
   font-size: 1.2em;
-  line-height: 1.5em;
+  line-height: 1.2em;
 }
 /* ---------- LAYOUT ---------- */
 .container {
@@ -42,10 +46,27 @@ h2 {
   margin: 2em 0;
 }
 .timer-area {
-  background: transparent url('../images/timer-area-pattern.png') left top;
+  background: transparent url('../images/bg.jpeg') right top no-repeat;
   text-align: center;
-  padding-top: 2em;
-  margin-bottom: 4em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  position: relative;
+  background-size: cover;
+}
+.timer-area:before {
+  content: '';
+  background-color: #000;
+  opacity: .7;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.inner-timer-area {
+  position: relative;
 }
 .timer-area h1 {
   color: white;
@@ -131,21 +152,20 @@ footer#main-footer p {
 /* ---------- TIMER ---------- */
 ul#countdown li {
   display: inline-block;
-  background: transparent url('../images/timer-piece.png') no-repeat left top;
+  /* background: transparent url('../images/timer-piece.png') no-repeat left top; */
   width: 104px;
-  margin-bottom: 4em;
   text-align: center;
 }
 ul#countdown li span {
   font-size: 3em;
   font-weight: bold;
   color: #1f2225;
-  height: 108px;
-  line-height: 108px;
   position: relative;
+  background-color: rgba(255,255,255,.8);
+  padding: 22px 10px;
+  display: inline-block;
 }
 ul#countdown li span::before {
-  content: '';
   width: 100%;
   height: 1px;
   border-top: 1px solid white;
@@ -157,7 +177,13 @@ ul#countdown li p.timeRefHours,
 ul#countdown li p.timeRefMinutes,
 ul#countdown li p.timeRefSeconds {
   margin-top: 1em;
-  color: #909091;
+  color: rgba(255,255, 255, .8);
   text-transform: uppercase;
   font-size: .875em;
+}
+.text-box-top {
+  padding-bottom: 20px;
+}
+.text-box-bottom {
+  padding-top: 20px;
 }
