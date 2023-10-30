@@ -1,11 +1,68 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+	<meta charset="utf-8">
+	<title>Yogesh Rasika Wedding</title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<!-- Mobile Specific Meta -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<!-- Stylesheets -->
+	<link rel="stylesheet" href="css/reset.css" />
+	<link rel="stylesheet" href="css/styles.css" />
+
+	<!--[if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+
+	<!-- JS -->
+	<script src="http://code.jquery.com/jquery-latest.js"></script>
+	<script src="js/countdown.js"></script>
+	<script>
+
+		$(document).ready(function () {
+			$("#countdown").countdown({
+				date: "17 august 2024 12:00:00",
+				format: "on"
+			},
+
+				function () {
+					// callback function
+				});
+		});
+
+	</script>
 </head>
+
 <body>
-    <p>Hello world!!</p>
+
+	<!-- LOGO -->
+
+	<!-- TIMER -->
+	<div class="timer-area">
+		<h1>Yogesh & Rasika Wedding</h1>
+		<ul id="countdown">
+			<li> <span class="days">00</span>
+				<p class="timeRefDays">days</p>
+			</li>
+			<li> <span class="hours">00</span>
+				<p class="timeRefHours">hours</p>
+			</li>
+			<li> <span class="minutes">00</span>
+				<p class="timeRefMinutes">minutes</p>
+			</li>
+			<li> <span class="seconds">00</span>
+				<p class="timeRefSeconds">seconds</p>
+			</li>
+		</ul>
+	</div>
+	<!-- end timer-area -->
+
+	<!-- FOOTER -->
 </body>
+
 </html>

@@ -1,0 +1,207 @@
+/**********************************************************************************
+
+	Project Name: 
+	Project Description: 
+	File Name:
+	Author: Adi Purdila
+	Author URI: http://www.adipurdila.com
+	Version: 1.0.0
+	
+**********************************************************************************/
+// VARIABLES
+@link: #2a9ccc;
+@dark-link: darken(@link, 10%);
+@base-text: #1f2225;
+@light-text: #909091;
+@light-border: #DCDEE0;
+@light-bg: #FCFBFB;
+
+
+// PARAMETRIC MIXINS
+.round (@radius: 5px){
+	-webkit-border-radius: @radius;
+	border-radius: @radius;
+}
+
+.gradient (@from, @to) {
+	background-color: @from;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(@from), to(@to));
+	background-image: -webkit-linear-gradient(top, @from, @to);
+	background-image:    -moz-linear-gradient(top, @from, @to);
+	background-image:      -o-linear-gradient(top, @from, @to);
+	background-image:         linear-gradient(to bottom, @from, @to);
+}
+
+.box-shadow (@inset, @x: 0, @y: 0, @blur: 1px, @color: #000) {
+	-webkit-box-shadow: @arguments;
+	box-shadow: @arguments;
+}
+
+
+
+
+/* ---------- TYPOGRAPHY ---------- */
+body {
+	font: 1em/1.5em "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+	color: @base-text;
+}
+
+
+p {
+	a {
+		color: @link;
+		&:hover { color: @base-text; }
+	}
+}
+
+h1, h2 {
+	font-family: Georgia, serif;
+	margin-bottom: 1em;
+}
+
+h1 {
+	font-size: 2em;
+	line-height: 3em;
+}
+
+h2 {
+	font-size: 1.2em;
+	line-height: 1.5em;
+}
+
+
+
+
+/* ---------- LAYOUT ---------- */
+.container {
+	width: 100%;
+	text-align: center;
+	margin: 0 auto;
+}
+
+#logo {
+	img { margin: 2em 0; }
+}
+
+.timer-area {
+	background: transparent url('../images/timer-area-pattern.png') left top;
+	text-align: center;
+	padding-top: 2em;
+	
+	h1 {
+		color: white;
+	}
+	
+	margin-bottom: 4em;
+}
+
+
+
+/* ---------- SIGNUP ---------- */
+.form-wrapper {
+	border: 1px solid @light-border;
+	padding: .5em;
+	width: 30em;
+	margin: 1em auto;
+	overflow: hidden;
+	.round(13px);
+
+	&:hover, &:focus {
+		border: 1px solid darken(@light-border, 10%);
+	}
+}
+
+input[type="email"] {
+	border: none;
+	float: left;
+	font-size: 1em;
+	padding: .5em;
+	outline: none;
+	margin-top: .7em;
+	width: 19em;
+}
+
+input[type="submit"] {
+	float: right;
+	border: none;
+	.round();
+	.gradient(@link, @dark-link);
+	color: white;
+	.box-shadow(inset, 0, 2px, 2px, @dark-link);
+	padding: 1em;
+	font-size: 1em;
+	text-transform: uppercase;
+	cursor: pointer;
+	
+	&:hover {
+		.gradient(lighten(@link, 2%), lighten(@dark-link, 2%));
+	}
+}
+
+
+/* ---------- FOOTER ---------- */
+footer#disclaimer {
+	p {
+		font-size: .875em;
+		color: @light-text;
+		font-style: italic;
+		
+		span {
+			font-size: 1.2em;
+			color: @link;
+		}
+	}
+}
+
+footer#main-footer {
+	.gradient(@light-bg, white);
+	border-top: 1px solid @light-border;
+	.box-shadow(inset, 0, 2px, 5px, darken(@light-bg, 10%));
+	text-align: center;
+	padding: 2em 0;
+	margin-top: 4em;
+	
+	p {
+		font-size: .875em;
+		margin-bottom: 1em;
+	}
+}
+
+
+
+/* ---------- TIMER ---------- */
+ul#countdown {
+	li {
+		display: inline-block;
+		background: transparent url('../images/timer-piece.png') no-repeat left top;
+		width: 104px;
+		margin-bottom: 4em;
+		text-align: center;
+		
+		span {
+			font-size: 3em;
+			font-weight: bold;
+			color: @base-text;
+			height: 108px;
+			line-height: 108px;	
+			position: relative;
+			
+			&::before {
+				content: '';
+				width: 100%;
+				height: 1px;
+				border-top: 1px solid white;
+				position: absolute;
+				top: 31px;
+			}
+		}
+		
+		p.timeRefDays, p.timeRefHours,
+		p.timeRefMinutes, p.timeRefSeconds {
+			margin-top: 1em;
+			color: @light-text;
+			text-transform: uppercase;
+			font-size: .875em;
+		}
+	}
+}
