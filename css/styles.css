@@ -187,3 +187,13 @@ ul#countdown li p.timeRefSeconds {
 .text-box-bottom {
   padding-top: 20px;
 }
+
+
+@media (max-width: 767px) {
+  .timer-area {
+    background-position: 73% 0px;
+  }
+  ul#countdown li {
+    width: 90px;
+  }
+}
