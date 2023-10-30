@@ -194,6 +194,9 @@ ul#countdown li p.timeRefSeconds {
     background-position: 73% 0px;
   }
   ul#countdown li {
-    width: 90px;
+    width: 85px;
+  }
+  ul#countdown li span {
+    font-size: 2.4em;
   }
 }
