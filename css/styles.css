@@ -50,10 +50,10 @@ h2 {
   text-align: center;
   display: flex;
   align-items: center;
-  justify-content: center;
   height: 100vh;
   position: relative;
   background-size: cover;
+  padding-left: 10%;
 }
 .timer-area:before {
   content: '';
@@ -188,10 +188,16 @@ ul#countdown li p.timeRefSeconds {
   padding-top: 20px;
 }
 
+h3.wedding-date {
+  font-size: 22px;
+  font-weight: bold;
+}
 
 @media (max-width: 767px) {
   .timer-area {
     background-position: 73% 0px;
+    justify-content: center;
+    padding-left: 0;
   }
   ul#countdown li {
     width: 75px;
