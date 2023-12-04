@@ -58,7 +58,7 @@ h2 {
 .timer-area:before {
   content: '';
   background-color: #000;
-  opacity: .7;
+  opacity: .3;
   height: 100%;
   width: 100%;
   position: absolute;
