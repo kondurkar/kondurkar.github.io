@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Fade-up animation ───────────────────────────────────── */
+.fade-up {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-up.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Scrollbar ───────────────────────────────────────────── */
+::-webkit-scrollbar       { width: 6px; }
+::-webkit-scrollbar-track { background: #080c10; }
+::-webkit-scrollbar-thumb { background: rgba(0,200,255,0.2); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(0,200,255,0.4); }
+
+/* ── Selection ───────────────────────────────────────────── */
+::selection { background: rgba(0,200,255,0.2); color: #e4eaf2; }
+
+/* ── Smooth scroll ───────────────────────────────────────── */
+html { scroll-behavior: smooth; }
+
+/* ── Reset ───────────────────────────────────────────────── */
+* { box-sizing: border-box; }
+
+/* ── About section strong tags ───────────────────────────── */
+.about-p strong { color: #e4eaf2; font-weight: 500; }
+
+/* ── Timeline border fix ─────────────────────────────────── */
+.timeline-line {
+  border-left: 1px solid transparent;
+  border-image: linear-gradient(to bottom, #00c8ff, transparent) 1;
+}
