@@ -11,7 +11,7 @@ export const ME = {
   email:         "kondurkaryogesh4@gmail.com",
   available:     true,
   availableText: "Open to Senior Frontend Developer roles",
-  resumeUrl:     "/assets/Yogesh_Kondurkar_Senior_Frontend_Engineer.pdf",
+  resumeUrl:     "/Yogesh_Kondurkar_Senior_Frontend_Engineer.pdf",
   social: {
     github:   "https://github.com/kondurkar",                                      // add your GitHub username
     linkedin: "https://www.linkedin.com/in/yogesh-kondurkar",

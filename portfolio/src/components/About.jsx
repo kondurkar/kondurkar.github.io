@@ -24,16 +24,19 @@ export default function About() {
               />
             ))}
           </div>
-          {/* <div className="mt-6">
+          <div className="mt-6">
             <a
               href={ME.resumeUrl}
+              download="Yogesh_Kondurkar_Resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-2 bg-transparent text-cyan-400
                          border border-cyan-500/25 font-mono text-[13px] tracking-widest px-7 py-3 rounded-sm
                          transition-all duration-200 hover:bg-cyan-500/6 hover:border-cyan-400"
             >
               Download Resume
             </a>
-          </div> */}
+          </div>
         </div>
 
         {/* Stats grid */}

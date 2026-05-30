@@ -55,7 +55,7 @@ export default function Hero() {
         </p>
 
         {/* CTAs */}
-        {/*
+        
         <div className="flex gap-4 mt-10 flex-wrap">
           <a
             href="#projects"
@@ -74,7 +74,7 @@ export default function Hero() {
             Get in touch
           </a>
         </div>
-        */}
+       
         {/* Status */}
         {ME.available && (
           <div className="flex items-center gap-2 mt-12 font-mono text-[12px] text-slate-500">
