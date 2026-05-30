@@ -124,33 +124,10 @@ export const EXPERIENCE = [
 
 export const PROJECTS = [
   {
-    label: "Pfizer Inc.",
-    name: "LYRICA, Talking UC, Suspect & Detect",
-    desc: "Built and maintained brand websites  for LYRICA, Talking UC, Suspect & Detect of Pfizer Inc. Delivered responsive, accessible, and compliance-ready frontend interfaces using Drupal CMS, HTML, CSS, and JavaScript.",
-    tags: ["Drupal", "HTML5", "CSS3", "JavaScript"],
-    demo: "#",
-    github: "#",
-    showDemo: true,
-    showGithub: false,
-    client: "Pfizer Inc.",
-    code: `// Drupal theme — custom JS module
-      (function ($, Drupal) {
-        Drupal.behaviors.lyricaHero = {
-          attach: function (context) {
-            $('.hero-banner', context)
-              .once('lyrica-hero')
-              .each(function () {
-                initHeroAnimation(this);
-              });
-          }
-        };
-      })(jQuery, Drupal);`,
-  },
-  {
     label: "HP PRE",
     name: "HP PRE Tool — Hewlett Packard",
     desc: "Partner Rebate Estimator used daily by HP's worldwide Distributor and Reseller partners to estimate deal rebates. Built with React and ASP.NET Core — consumed REST APIs, implemented JWT authentication, route protection, and rendered complex business-logic-driven tables.",
-    tags: ["React", "ASP.NET Core", "JWT", "REST APIs", "React Hooks"],
+    tags: ["React", "ASP.NET Core", "JWT", "REST APIs", "React Hooks", "Performance"],
     demo: "#",
     github: "#",
     showDemo: false,
@@ -173,7 +150,7 @@ export const PROJECTS = [
     label: "HP Prism",
     name: "Scalable UI System",
     desc: "Built responsive component-driven interfaces integrated with enterprise backend systems and authentication flows.",
-    tags: ["Angular", "Tailwind", "Material UI"],
+    tags: ["Angular", "Tailwind", "Material UI", "Performance"],
     demo: "#",
     github: "#",
     showDemo: false,
@@ -191,7 +168,7 @@ export const PROJECTS = [
     label: "HP TSGA",
     name: "HP Enterprise React Migration",
     desc: "Revamped legacy applications into scalable React-based frontends with reusable architecture and optimized performance.",
-    tags: ["React", "Redux", "Material UI", "ASP.NET APIs", "JWT", "Tailwind"],
+    tags: ["React", "Redux", "Material UI", "ASP.NET APIs", "JWT", "Tailwind", "Performance"],
     demo: "#",
     github: "#",
     showDemo: false,
@@ -210,7 +187,7 @@ export const PROJECTS = [
     label: "HP USM",
     name: "Global Order Management Dashboard",
     desc: "Developed a React-based enterprise dashboard for managing global order backlog, load planning, and revenue projections across multiple business units. Built dynamic data tables, interactive charts, and reporting modules that enabled business users to analyze operational performance and make informed decisions. Focused on performance optimization, reusable component architecture, and seamless integration with backend APIs.",
-    tags: ["React", "Redux", "Material UI", "ASP.NET APIs"],
+    tags: ["React", "Redux", "Material UI", "ASP.NET APIs", "Performance"],
     demo: "#",
     github: "#",
     showDemo: false,
@@ -228,7 +205,7 @@ export const PROJECTS = [
     label: "HP MCO",
     name: "Enterprise Planning & Simulation Portal",
     desc: "Built a scalable planning and simulation platform that allowed users to model different business scenarios and evaluate their impact on key performance metrics. Implemented configurable dashboards, hierarchical data views, and real-time calculations using React and modern frontend technologies. Enhanced application maintainability through component reusability, code optimization, and improved user experience..",
-    tags: ["React", "Redux", "Material UI", "ASP.NET APIs", "JWT", "REST APIs", "React Hooks"],
+    tags: ["React", "Redux", "Material UI", "ASP.NET APIs", "JWT", "REST APIs", "React Hooks", "Performance", "Responsive Design", "Bootstrap", "Cross-browser Compatibility", "Accessibility"],
     demo: "#",
     github: "#",
     showDemo: false,
@@ -246,7 +223,7 @@ export const PROJECTS = [
     label: "HP Ondemand",
     name: "Financial Analytics & Payment Insights Platform",
     desc: "Designed and implemented a financial reporting application that provided payment analysis, currency conversion insights, and forecasting capabilities. Developed advanced table structures with drill-down functionality, interactive visualizations, and Excel export features. Collaborated with stakeholders to transform complex financial data into actionable business intelligence.",
-    tags: ["React", "Redux", "Material UI", "ASP.NET APIs", "JWT", "REST APIs", "React Hooks"],
+    tags: ["React", "Redux", "Material UI", "ASP.NET APIs", "JWT", "REST APIs", "React Hooks", "Performance", "Responsive Design", "Bootstrap", "Cross-browser Compatibility", "Accessibility"],
     demo: "#",
     github: "#",
     showDemo: false,
@@ -261,10 +238,33 @@ export const PROJECTS = [
     };`,
   },
   {
+    label: "Pfizer Inc.",
+    name: "LYRICA, Talking UC, Suspect & Detect",
+    desc: "Built and maintained brand websites  for LYRICA, Talking UC, Suspect & Detect of Pfizer Inc. Delivered responsive, accessible, and compliance-ready frontend interfaces using Drupal CMS, HTML, CSS, and JavaScript.",
+    tags: ["Drupal", "HTML5", "CSS3", "JavaScript", "Performance"],
+    demo: "#",
+    github: "#",
+    showDemo: true,
+    showGithub: false,
+    client: "Pfizer Inc.",
+    code: `// Drupal theme — custom JS module
+      (function ($, Drupal) {
+        Drupal.behaviors.lyricaHero = {
+          attach: function (context) {
+            $('.hero-banner', context)
+              .once('lyrica-hero')
+              .each(function () {
+                initHeroAnimation(this);
+              });
+          }
+        };
+      })(jQuery, Drupal);`,
+  },
+  {
     label: "LUXURY RE",
     name: "Luxury Real Estate Website",
     desc: "Converted a high-fidelity PSD into a fully animated luxury real estate website. Scroll-triggered property reveals, parallax hero, CSS counter animations on stats, and hover micro-interactions — built with GULP and hand-written CSS, zero UI frameworks.",
-    tags: ["HTML5", "CSS3", "jQuery", "JavaScript", "GULP", "PSD to HTML", "Animation"],
+    tags: ["HTML5", "CSS3", "jQuery", "JavaScript", "GULP", "PSD to HTML", "Animation", "Performance", "Responsive Design", "Bootstrap", "Cross-browser Compatibility", "Accessibility"],
     demo: "#",
     github: "#",
     showDemo: false,
@@ -288,7 +288,7 @@ export const PROJECTS = [
     label: "AGENCY",
     name: "Creative Agency Landing Page",
     desc: "Pixel-perfect PSD-to-HTML build for a digital agency — full-screen hero with typed-text effect, magnetic cursor, SVG path animations, staggered section reveals, and smooth page transitions. Delivered to 0.5px accuracy against the original Photoshop design.",
-    tags: ["HTML5", "CSS3", "SCSS", "jQuery", "JavaScript", "GULP", "SVG Animation", "PSD to HTML"],
+    tags: ["HTML5", "CSS3", "SCSS", "jQuery", "JavaScript", "GULP", "SVG Animation", "PSD to HTML", "Performance"],
     demo: "#",
     github: "#",
     showDemo: false,
@@ -317,7 +317,7 @@ export const PROJECTS = [
     label: "PORTFOLIO TPL",
     name: "Animated Portfolio Template",
     desc: "High-performance animated portfolio from a PSD design — split-screen hero, scroll-linked progress bar, clip-path wipe reveals, and a CSS dark/light theme toggle. Scored 98 on Google Lighthouse performance with zero JS frameworks.",
-    tags: ["HTML5", "CSS3", "SCSS", "jQuery", "JavaScript", "GULP", "Animation", "PSD to HTML", "Performance"],
+    tags: ["HTML5", "CSS3", "SCSS", "jQuery", "JavaScript", "GULP", "Animation", "PSD to HTML", "Performance", "Bootstrap", "Cross-browser Compatibility", "Responsive Design", "Accessibility"],
     demo: "#",
     github: "#",
     showDemo: false,
@@ -347,7 +347,7 @@ export const PROJECTS = [
     label: "WEB",
     name: "Client Websites — Early Career",
     desc: "Pixel-perfect HTML/CSS/JS websites built from PSD designs for clients across energy, real estate, and manufacturing sectors. Projects include Nayara Energy, Sahana Realty, Ambience, Uni Tile India, and ACIPL.",
-    tags: ["HTML5", "CSS3", "JavaScript", "jQuery", "PSD to HTML"],
+    tags: ["HTML5", "CSS3", "JavaScript", "jQuery", "PSD to HTML", "Performance", "Responsive Design", "Bootstrap", "Cross-browser Compatibility"],
     demo: "#",
     github: "#",
     showDemo: false,
