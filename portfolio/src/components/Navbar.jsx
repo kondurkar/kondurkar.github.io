@@ -25,17 +25,16 @@ export default function Navbar() {
         {SECTION_IDS.map((id) => {
           // Blog links to /blog page
           if (id === "blog") {
-            const isBlogActive = location.pathname.startsWith("/blog");
+            const isActive = location.pathname.startsWith("/blog");
             return (
               <li key={id}>
                 <Link
                   to="/blog"
-                  className={`font-mono text-[13px] tracking-widest no-underline transition-colors duration-200
-                              relative group
-                              ${isBlogActive ? "text-cyan-400" : "text-slate-500 hover:text-slate-200"}`}
+                  className={`font-mono text-[13px] tracking-widest no-underline transition-colors duration-200 group
+                              ${isActive ? "text-cyan-400" : "text-slate-500 hover:text-slate-200"}`}
                 >
                   <span className={`text-cyan-400 mr-0.5 transition-opacity duration-200
-                                    ${isBlogActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}>
+                                    ${isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}>
                     _
                   </span>
                   blog
@@ -44,13 +43,28 @@ export default function Navbar() {
             );
           }
 
-          // All other links are anchor links on home page
+          // Projects → /projects page
+          if (id === "projects") {
+            const isActive = location.pathname === "/projects";
+            return (
+              <li key={id}>
+                <Link to="/projects"
+                  className={`font-mono text-[13px] tracking-widest no-underline transition-colors duration-200 group
+                    ${isActive ? "text-cyan-400" : "text-slate-500 hover:text-slate-200"}`}>
+                  <span className={`text-cyan-400 mr-0.5 transition-opacity duration-200
+                    ${isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}>_</span>
+                  projects
+                </Link>
+              </li>
+            );
+          }
+
+          // All other → anchor links
           return (
           <li key={id}>
             <a
                 href={isHome ? `#${id}` : `/#${id}`}
-              className={`font-mono text-[13px] tracking-widest no-underline transition-colors duration-200
-                          relative group
+              className={`font-mono text-[13px] tracking-widest no-underline transition-colors duration-200 group
                             ${isHome && active === id ? "text-cyan-400" : "text-slate-500 hover:text-slate-200"}`}
             >
               <span className={`text-cyan-400 mr-0.5 transition-opacity duration-200
