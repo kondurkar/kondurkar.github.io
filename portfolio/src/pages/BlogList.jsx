@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSEO } from "../hooks/useSEO";
 import { Link } from "react-router-dom";
 import { BLOGS } from "../data/blogs";
 import Navbar from "../components/Navbar";
@@ -57,6 +58,12 @@ function BlogTile({ slug, date, readTime, title, excerpt, tags }) {
 
 export default function BlogList() {
   const [activeTag, setActiveTag] = useState("All");
+
+  useSEO({
+    title: "Blog & Articles — Yogesh Kondurkar | React, JavaScript, TypeScript",
+    description: "Frontend engineering articles on React, JavaScript, TypeScript, CSS and web performance by Yogesh Kondurkar — Senior Frontend Developer with 10+ years experience.",
+    url: "/blog",
+  });
 
   const filtered = activeTag === "All"
     ? BLOGS

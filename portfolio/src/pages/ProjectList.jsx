@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSEO } from "../hooks/useSEO";
 import { Link } from "react-router-dom";
 import { PROJECTS } from "../data/config";
 import Navbar from "../components/Navbar";
@@ -11,6 +12,12 @@ const ALL_TAGS = ["All", ...Array.from(new Set(PROJECTS.flatMap(p => p.tags)))];
 
 export default function ProjectList() {
   const [activeTag, setActiveTag] = useState("All");
+
+  useSEO({
+    title: "Projects — Yogesh Kondurkar | React, Angular, Frontend Work",
+    description: "Portfolio of frontend projects by Yogesh Kondurkar — React dashboards, Figma-to-code builds, PSD-to-HTML animations, and enterprise UI systems built over 10+ years.",
+    url: "/projects",
+  });
 
   const filtered = activeTag === "All"
     ? PROJECTS

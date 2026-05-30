@@ -3,6 +3,7 @@ import { BLOGS } from "../data/blogs";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import CursorGlow from "../components/CursorGlow";
+import { useSEO } from "../hooks/useSEO";
 
 // Simple markdown-to-JSX renderer (no library needed)
 function renderContent(content) {
@@ -172,6 +173,14 @@ export default function BlogPost() {
   const post = BLOGS.find(b => b.slug === slug);
 
   if (!post) return <Navigate to="/blog" replace />;
+
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  useSEO({
+    title: `${post.title} — Yogesh Kondurkar`,
+    description: post.excerpt,
+    url: `/blog/${post.slug}`,
+    type: "article",
+  });
 
   const currentIndex = BLOGS.findIndex(b => b.slug === slug);
   const prev = BLOGS[currentIndex + 1];
