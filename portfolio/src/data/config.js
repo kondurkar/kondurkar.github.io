@@ -128,7 +128,7 @@ export const PROJECTS = [
     label: "HP PRE",
     name: "HP PRE Tool — Hewlett Packard",
     desc: "Partner Rebate Estimator used daily by HP's worldwide Distributor and Reseller partners to estimate deal rebates. Built with React and ASP.NET Core — consumed REST APIs, implemented JWT authentication, route protection, and rendered complex business-logic-driven tables.",
-    tags: ["React", "ASP.NET Core", "JWT", "REST APIs", "React Hooks", "Performance", "Redux", "Tailwind"],
+    tags: ["React", "JWT", "REST APIs", "React Hooks", "Performance", "Redux", "Tailwind"],
     demo: "#",
     github: "#",
     showDemo: false,
