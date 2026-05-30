@@ -1,42 +1,67 @@
+import { Link, useLocation } from "react-router-dom";
 import { ME } from "../data/config";
 import { useScrollSpy } from "../hooks/useScrollSpy";
 
-const NAV_ITEMS = ["about", "skills", "experience", "projects", "contact"];
+const SECTION_IDS = ["about", "skills", "experience", "projects", "blog", "contact"];
 
 export default function Navbar() {
-  const active = useScrollSpy(["hero", ...NAV_ITEMS]);
+  const active   = useScrollSpy(["hero", ...SECTION_IDS]);
+  const location = useLocation();
+  const isHome   = location.pathname === "/";
   const [firstName, lastName] = ME.name.split(" ");
 
   return (
     <nav className="fixed top-0 w-full z-50 h-16 flex items-center justify-between px-8
                     bg-[#080c10]/85 backdrop-blur-xl border-b border-cyan-500/10">
-      <a
-        href="#hero"
+      <Link
+        to="/"
         className="font-mono text-[15px] text-cyan-400 tracking-wide no-underline"
       >
         {firstName?.toLowerCase() || "your"}
-        <span className="text-slate-500">
-          .{lastName?.toLowerCase() || "name"}
-        </span>
-      </a>
+        <span className="text-slate-500">.{lastName?.toLowerCase() || "name"}</span>
+      </Link>
 
       <ul className="flex gap-8 list-none m-0 p-0">
-        {NAV_ITEMS.map((id) => (
+        {SECTION_IDS.map((id) => {
+          // Blog links to /blog page
+          if (id === "blog") {
+            const isBlogActive = location.pathname.startsWith("/blog");
+            return (
+              <li key={id}>
+                <Link
+                  to="/blog"
+                  className={`font-mono text-[13px] tracking-widest no-underline transition-colors duration-200
+                              relative group
+                              ${isBlogActive ? "text-cyan-400" : "text-slate-500 hover:text-slate-200"}`}
+                >
+                  <span className={`text-cyan-400 mr-0.5 transition-opacity duration-200
+                                    ${isBlogActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}>
+                    _
+                  </span>
+                  blog
+                </Link>
+              </li>
+            );
+          }
+
+          // All other links are anchor links on home page
+          return (
           <li key={id}>
             <a
-              href={`#${id}`}
+                href={isHome ? `#${id}` : `/#${id}`}
               className={`font-mono text-[13px] tracking-widest no-underline transition-colors duration-200
                           relative group
-                          ${active === id ? "text-cyan-400" : "text-slate-500 hover:text-slate-200"}`}
+                            ${isHome && active === id ? "text-cyan-400" : "text-slate-500 hover:text-slate-200"}`}
             >
               <span className={`text-cyan-400 mr-0.5 transition-opacity duration-200
-                                ${active === id ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}>
+                                  ${isHome && active === id ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}>
                 _
               </span>
               {id === "experience" ? "exp" : id}
             </a>
           </li>
-        ))}
+          );
+        })}
       </ul>
     </nav>
   );
