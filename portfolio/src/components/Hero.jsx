@@ -32,7 +32,7 @@ export default function Hero() {
         </div>
 
         {/* Headline */}
-        <h1 className="font-display text-[clamp(3rem,8vw,7rem)] font-extrabold leading-[0.95] tracking-[-0.03em] text-slate-100 mb-2">
+        <h1 className="font-display text-[clamp(2.6rem,8vw,7rem)] font-extrabold leading-[0.95] tracking-[-0.03em] text-slate-100 mb-2">
           {firstWords}
           <br />
           <span
