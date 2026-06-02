@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { PROJECTS } from "../data/config";
+import { PROJECTS } from "../data/PROJECTS";
 import { useFadeUp } from "../hooks/useFadeUp";
 import SectionLabel from "./SectionLabel";
 import ProjectTile from "./ProjectTile";

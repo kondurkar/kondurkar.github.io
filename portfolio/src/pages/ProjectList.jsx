@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSEO } from "../hooks/useSEO";
 import { Link } from "react-router-dom";
-import { PROJECTS } from "../data/config";
+import { PROJECTS } from "../data/Projects";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import CursorGlow from "../components/CursorGlow";
