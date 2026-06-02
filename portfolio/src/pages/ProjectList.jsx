@@ -8,7 +8,11 @@ import CursorGlow from "../components/CursorGlow";
 import ProjectTile from "../components/ProjectTile";
 
 // Collect all unique tags across projects
-const ALL_TAGS = ["All", ...Array.from(new Set(PROJECTS.flatMap(p => p.tags)))];
+const ALL_TAGS = [
+  "All",
+  ...Array.from(new Set(PROJECTS.flatMap(p => p.tags)))
+    .sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" }))
+];
 
 export default function ProjectList() {
   const [activeTag, setActiveTag] = useState("All");

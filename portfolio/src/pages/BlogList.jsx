@@ -6,7 +6,11 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import CursorGlow from "../components/CursorGlow";
 
-const ALL_TAGS = ["All", ...Array.from(new Set(BLOGS.flatMap(b => b.tags)))];
+const ALL_TAGS = [
+  "All",
+  ...Array.from(new Set(BLOGS.flatMap(b => b.tags)))
+    .sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" }))
+];
 
 function BlogTile({ slug, date, readTime, title, excerpt, tags }) {
   return (
