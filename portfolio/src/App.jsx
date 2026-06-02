@@ -1,17 +1,19 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Navbar      from "./components/Navbar";
-import Hero        from "./components/Hero";
-import About       from "./components/About";
-import Skills      from "./components/Skills";
-import Experience  from "./components/Experience";
-import Projects    from "./components/Projects";
-import Blog        from "./components/Blog";
-import Contact     from "./components/Contact";
-import Footer      from "./components/Footer";
-import CursorGlow  from "./components/CursorGlow";
-import BlogList    from "./pages/BlogList";
-import BlogPost    from "./pages/BlogPost";
-import ProjectList from "./pages/ProjectList";
+import Navbar       from "./components/Navbar";
+import Hero         from "./components/Hero";
+import About        from "./components/About";
+import Skills       from "./components/Skills";
+import Experience   from "./components/Experience";
+import Projects     from "./components/Projects";
+import Blog         from "./components/Blog";
+import Contact      from "./components/Contact";
+import Footer       from "./components/Footer";
+import CursorGlow   from "./components/CursorGlow";
+import BlogList     from "./pages/BlogList";
+import BlogPost     from "./pages/BlogPost";
+import ProjectList  from "./pages/ProjectList";
+import ScrollToTop  from "./components/ScrollToTop";
+import ScrollToHash from "./components/ScrollToHash";
 
 const BG = () => (
   <>
@@ -44,13 +46,17 @@ function Home() {
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/"           element={<Home />} />
-        <Route path="/projects"   element={<ProjectList />} />
-        <Route path="/blog"       element={<BlogList />} />
-        <Route path="/blog/:slug" element={<BlogPost />} />
-      </Routes>
-    </BrowserRouter>
+    <>
+      <BrowserRouter>
+        <ScrollToTop />
+        <ScrollToHash />
+        <Routes>
+          <Route path="/"           element={<Home />} />
+          <Route path="/projects"   element={<ProjectList />} />
+          <Route path="/blog"       element={<BlogList />} />
+          <Route path="/blog/:slug" element={<BlogPost />} />
+        </Routes>
+      </BrowserRouter>
+    </>
   );
 }
