@@ -14,6 +14,7 @@ import BlogPost     from "./pages/BlogPost";
 import ProjectList  from "./pages/ProjectList";
 import ScrollToTop  from "./components/ScrollToTop";
 import ScrollToHash from "./components/ScrollToHash";
+import NotFound     from "./pages/NotFound";
 
 const BG = () => (
   <>
@@ -55,6 +56,7 @@ export default function App() {
           <Route path="/projects"   element={<ProjectList />} />
           <Route path="/blog"       element={<BlogList />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
+          <Route path="*"           element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </>
