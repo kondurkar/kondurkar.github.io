@@ -202,7 +202,7 @@ export default function BlogPost() {
       <CursorGlow />
       <Navbar />
 
-      <main className="relative z-10 max-w-[740px] mx-auto px-8 pt-32 pb-24">
+      <main className="relative z-10 max-w-[1000px] mx-auto px-8 pt-32 pb-24">
         {/* Back */}
         <Link
           to="/blog"

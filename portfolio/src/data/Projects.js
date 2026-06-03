@@ -105,7 +105,26 @@ const code = {
       .cta-button {
         transition: transform 0.3s ease,
                     box-shadow 0.3s ease;
-      }`
+      }`,
+    useQuery: `const useQuery = (key, fn) => {
+      const [data, setData] = useState();
+          useEffect(() => {
+              fn().then(setData);
+          }, [key]);
+      return data;
+    }`,
+    stream: `const stream = new ReadableStream({
+        async start(ctrl) {
+          for await (const chunk of llm) {
+            ctrl.enqueue(chunk);
+          }
+        } 
+      });`,
+    css: `@keyframes glitch {
+        0% { clip-path: inset(40% 0 60% 0) }
+        25% { clip-path: inset(10% 0 80% 0) }
+        50% { clip-path: inset(70% 0 10% 0) }
+    }`,
     
 };
 
@@ -168,7 +187,7 @@ export const PROJECTS = [
     showDemo: false,
     showGithub: false,
     client: "HP (Hewlett Packard)",
-    code: code.useAuth,
+    code: code.stream,
   },
   {
     label: "HP Ondemand",
@@ -180,7 +199,7 @@ export const PROJECTS = [
     showDemo: false,
     showGithub: false,
     client: "HP (Hewlett Packard)",
-    code: code.jwt,
+    code: code.css,
   },
   {
     label: "Pfizer Inc.",

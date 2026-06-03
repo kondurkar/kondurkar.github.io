@@ -1,7 +1,7 @@
 export default {
   slug: "typescript-utility-types-you-should-know",
   title: "TypeScript Utility Types Every Frontend Developer Should Know",
-  date: "Feb 2025",
+  date: "Feb 2026",
   readTime: "6 min read",
   tags: ["TypeScript", "JavaScript", "Types"],
   excerpt:

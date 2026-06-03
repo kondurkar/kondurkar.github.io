@@ -1,7 +1,7 @@
 export default {
   slug: "why-useeffect-is-not-for-data-fetching",
   title: "Why useEffect Is Not the Right Tool for Data Fetching",
-  date: "May 2025",
+  date: "May 2026",
   readTime: "8 min read",
   tags: ["React", "Hooks", "Performance"],
   excerpt: "Most React developers reach for useEffect when they need to fetch data. It seems obvious — run a side effect, get data, set state. But this pattern causes subtle bugs, race conditions, and poor UX. Here's what to do instead.",

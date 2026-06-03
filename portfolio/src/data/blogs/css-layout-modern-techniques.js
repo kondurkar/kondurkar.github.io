@@ -1,7 +1,7 @@
 export default {
   slug: "css-layout-modern-techniques",
   title: "Modern CSS Layout: Flexbox vs Grid — When to Use Which",
-  date: "Jan 2025",
+  date: "Jan 2026",
   readTime: "7 min read",
   tags: ["CSS", "Layout", "Frontend"],
   excerpt:

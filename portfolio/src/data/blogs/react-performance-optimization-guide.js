@@ -1,7 +1,7 @@
 export default {
   slug: "react-performance-optimization-guide",
   title: "React Performance Optimization: The Complete Practical Guide",
-  date: "Mar 2025",
+  date: "Mar 2026",
   readTime: "10 min read",
   tags: ["React", "Performance", "Optimization"],
   excerpt:

@@ -1,7 +1,7 @@
 export default {
   slug: "javascript-closures-explained",
   title: "JavaScript Closures: The Concept Every Developer Must Master",
-  date: "Apr 2025",
+  date: "Apr 2026",
   readTime: "7 min read",
   tags: ["JavaScript", "Fundamentals", "Scope"],
   excerpt:

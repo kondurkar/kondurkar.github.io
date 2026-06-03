@@ -23,32 +23,38 @@
 
   <!-- Blog posts -->
   <url>
+    <loc>https://kondurkar.github.io/blog/react-authentication-authorization-jwt-guide</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://kondurkar.github.io/blog/why-useeffect-is-not-for-data-fetching</loc>
-    <lastmod>2025-05-01</lastmod>
+    <lastmod>2026-05-01</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://kondurkar.github.io/blog/javascript-closures-explained</loc>
-    <lastmod>2025-04-01</lastmod>
+    <lastmod>2026-04-01</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://kondurkar.github.io/blog/react-performance-optimization-guide</loc>
-    <lastmod>2025-03-01</lastmod>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://kondurkar.github.io/blog/typescript-utility-types-you-should-know</loc>
-    <lastmod>2025-02-01</lastmod>
+    <lastmod>2026-02-01</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://kondurkar.github.io/blog/css-layout-modern-techniques</loc>
-    <lastmod>2025-01-01</lastmod>
+    <lastmod>2026-01-01</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
