@@ -12,27 +12,27 @@ const code = {
         return res.json();
       };`,
     component: `@Component({
-      selector: 'app-dashboard',
-      templateUrl: './dashboard.html',
-      changeDetection:
-        ChangeDetectionStrategy.OnPush
-    })
-    export class DashboardComponent {}`,
+        selector: 'app-dashboard',
+        templateUrl: './dashboard.html',
+        changeDetection:
+          ChangeDetectionStrategy.OnPush
+      })
+      export class DashboardComponent {}`,
     useAuth: `const useAuth = () => {
-      const [token, setToken] = useState(null);
-      const login = async (creds) => {
-        const res = await api.post('/auth', creds);
-        setToken(res.data.token);
-      };
-      return { token, login };
-    }`,
+        const [token, setToken] = useState(null);
+        const login = async (creds) => {
+          const res = await api.post('/auth', creds);
+          setToken(res.data.token);
+        };
+        return { token, login };
+      }`,
     fetch: `const fetchData = async (url) => {
-      const headers = {
-        Authorization: \`Bearer \${getToken()}\`
-      };
-      const res = await fetch(url, { headers });
-      return res.json();
-    };`,
+        const headers = {
+          Authorization: \`Bearer \${getToken()}\`
+        };
+        const res = await fetch(url, { headers });
+        return res.json();
+      };`,
     drupal: `// Drupal theme — custom JS module
       (function ($, Drupal) {
         Drupal.behaviors.lyricaHero = {
@@ -58,23 +58,23 @@ const code = {
         ease: 'power3.out',
       });`,
     magnetic: `// Magnetic cursor effect
-      document.querySelectorAll('[data-magnetic]')
-        .forEach(el => {
-          el.addEventListener('mousemove', (e) => {
-            const r = el.getBoundingClientRect();
-            const x = e.clientX - r.left - r.width/2;
-            const y = e.clientY - r.top - r.height/2;
-            gsap.to(el, {
-              x: x * 0.3,
-              y: y * 0.3,
-              duration: 0.4,
-              ease: 'power2.out'
-            });
+    document.querySelectorAll('[data-magnetic]')
+      .forEach(el => {
+        el.addEventListener('mousemove', (e) => {
+          const r = el.getBoundingClientRect();
+          const x = e.clientX - r.left - r.width/2;
+          const y = e.clientY - r.top - r.height/2;
+          gsap.to(el, {
+            x: x * 0.3,
+            y: y * 0.3,
+            duration: 0.4,
+            ease: 'power2.out'
           });
-          el.addEventListener('mouseleave', () => {
-            gsap.to(el, { x:0, y:0, duration:0.4 });
-          });
-        });`,
+        });
+        el.addEventListener('mouseleave', () => {
+          gsap.to(el, { x:0, y:0, duration:0.4 });
+        });
+      });`,
     clip: `// Clip-path scroll reveal
       const observer = new IntersectionObserver(
         entries => entries.forEach(e => {
@@ -107,12 +107,12 @@ const code = {
                     box-shadow 0.3s ease;
       }`,
     useQuery: `const useQuery = (key, fn) => {
-      const [data, setData] = useState();
-          useEffect(() => {
-              fn().then(setData);
-          }, [key]);
-      return data;
-    }`,
+        const [data, setData] = useState();
+            useEffect(() => {
+                fn().then(setData);
+            }, [key]);
+        return data;
+      }`,
     stream: `const stream = new ReadableStream({
         async start(ctrl) {
           for await (const chunk of llm) {
@@ -124,7 +124,63 @@ const code = {
         0% { clip-path: inset(40% 0 60% 0) }
         25% { clip-path: inset(10% 0 80% 0) }
         50% { clip-path: inset(70% 0 10% 0) }
-    }`,
+      }`,
+    jQuery: `// Before: jQuery spaghetti
+      $('#submit').on('click', function() {
+        $.ajax({ url: '/api/save', ... });
+      });
+
+      // After: React + Redux
+      const handleSubmit = () => {
+        dispatch(saveFormAsync(formData));
+      };`,
+    injectable: `@Injectable({ providedIn: 'root' })
+      export class LeaveService {
+        leaves$ = this.http
+          .get<Leave[]>('/api/leaves')
+          .pipe(
+            map(l => l.filter(
+              x => x.status === 'pending')),
+            catchError(this.handleError)
+          );
+      }`,
+    usetickets: `const useTickets = (agentId) =>
+      useQuery({
+        queryKey: ['tickets', agentId],
+        queryFn: () =>
+          api.get(\`/tickets?agent=\${agentId}\`),
+        refetchInterval: 15_000,
+        staleTime: 10_000,
+      });`,
+    button: `export const Button = forwardRef<
+        HTMLButtonElement, ButtonProps
+      >(({ variant = 'primary',
+          size = 'md',
+          children,
+          ...props }, ref) => (
+        <button
+          ref={ref}
+          className={cn(base, variants[variant],
+                        sizes[size])}
+          {...props}
+        >
+          {children}
+        </button>
+      ));`,
+    redux: `const slice = createSlice({
+      name: 'analytics',
+      initialState,
+      reducers: {
+        setDateRange: (state, { payload }) => {
+          state.range = payload;
+        },
+      },
+      extraReducers: (b) =>
+        b.addCase(fetchStats.fulfilled,
+          (state, { payload }) => {
+            state.data = payload;
+          }),
+    });`,
     
 };
 
