@@ -106,7 +106,7 @@ function renderContent(content) {
         <ul key={key()} className="my-4 space-y-2 pl-4">
           {items.map((item, idx) => (
             <li key={idx} className="text-slate-400 text-[15px] leading-relaxed flex gap-2">
-              <span className="text-cyan-400 shrink-0 mt-1">›</span>
+              <span className="text-cyan-400 shrink-0 leading-[1.45]">›</span>
               <span>{inlineFormat(item)}</span>
             </li>
           ))}

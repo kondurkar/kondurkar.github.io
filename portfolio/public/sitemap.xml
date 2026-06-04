@@ -29,6 +29,12 @@
 
   <!-- Blog posts -->
   <url>
+    <loc>https://kondurkar.github.io/blog/complete-git-guide-for-developers</loc>
+    <lastmod>2026-06-04</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://kondurkar.github.io/blog/react-authentication-authorization-jwt-guide</loc>
     <lastmod>2026-06-01</lastmod>
     <changefreq>yearly</changefreq>
