@@ -41,7 +41,7 @@ export default function Blog() {
 
   return (
     <section id="blog" className="relative z-10 max-w-[1100px] mx-auto px-8 py-24">
-      <SectionLabel index="05" label="writing" />
+      <SectionLabel index="06" label="writing" />
       <div className="flex items-end justify-between mb-10 flex-wrap gap-4">
         <h2 ref={titleRef} className="fade-up font-display text-[clamp(2rem,4vw,3.2rem)] font-bold text-slate-100 mb-0">
         From the Blog

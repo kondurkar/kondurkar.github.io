@@ -3,18 +3,15 @@ import { Link, useLocation } from "react-router-dom";
 import { ME } from "../data/config";
 import { useScrollSpy } from "../hooks/useScrollSpy";
 
-const SECTION_IDS = ["about", "skills", "experience", "projects", "blog", "contact"];
+const SECTION_IDS = ["about", "skills", "experience", "projects", "games", "blog", "contact"];
 
 function NavLink({ id, active, isHome, location, onClick }) {
-  const isBlog     = id === "blog";
-  const isProjects = id === "projects";
-
-  const isActive =
-    isBlog     ? location.pathname.startsWith("/blog") :
-    isProjects ? location.pathname === "/projects" :
-    isHome && active === id;
-
-  const label = id === "experience" ? "exp" : id;
+  const isPage     = ["blog", "projects", "games"].includes(id);
+  const pathMap    = { blog: "/blog", projects: "/projects", games: "/games" };
+  const isActive   = isPage
+    ? location.pathname.startsWith(pathMap[id])
+    : isHome && active === id;
+  const label      = id === "experience" ? "exp" : id;
 
   const cls = `font-mono text-[13px] tracking-widest no-underline transition-colors duration-200
                group flex items-center
@@ -27,8 +24,7 @@ function NavLink({ id, active, isHome, location, onClick }) {
     </span>
   );
 
-  if (isBlog)     return <Link to="/blog"     className={cls} onClick={onClick}>{accent}{label}</Link>;
-  if (isProjects) return <Link to="/projects" className={cls} onClick={onClick}>{accent}{label}</Link>;
+  if (isPage) return <Link to={pathMap[id]} className={cls} onClick={onClick}>{accent}{label}</Link>;
   return (
     <a href={isHome ? `#${id}` : `/#${id}`} className={cls} onClick={onClick}>
       {accent}{label}
@@ -39,7 +35,6 @@ function NavLink({ id, active, isHome, location, onClick }) {
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-
   const active   = useScrollSpy(["hero", ...SECTION_IDS]);
   const location = useLocation();
   const isHome   = location.pathname === "/";
@@ -75,7 +70,7 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop nav */}
-        <ul className="hidden md:flex gap-8 list-none m-0 p-0">
+        <ul className="hidden md:flex gap-6 list-none m-0 p-0">
           {SECTION_IDS.map(id => (
             <li key={id}>
               <NavLink id={id} active={active} isHome={isHome} location={location} />

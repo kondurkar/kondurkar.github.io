@@ -5,6 +5,7 @@ import About        from "./components/About";
 import Skills       from "./components/Skills";
 import Experience   from "./components/Experience";
 import Projects     from "./components/Projects";
+import Games        from "./components/Games";
 import Blog         from "./components/Blog";
 import Contact      from "./components/Contact";
 import Footer       from "./components/Footer";
@@ -12,6 +13,8 @@ import CursorGlow   from "./components/CursorGlow";
 import BlogList     from "./pages/BlogList";
 import BlogPost     from "./pages/BlogPost";
 import ProjectList  from "./pages/ProjectList";
+import GameList    from "./pages/GameList";
+import GamePage    from "./pages/Games/GamePage";
 import ScrollToTop  from "./components/ScrollToTop";
 import ScrollToHash from "./components/ScrollToHash";
 import NotFound     from "./pages/NotFound";
@@ -38,6 +41,7 @@ function Home() {
       <Skills />
       <Experience />
       <Projects />
+      <Games />
       <Blog />
       <Contact />
       <Footer />
@@ -52,11 +56,13 @@ export default function App() {
         <ScrollToTop />
         <ScrollToHash />
         <Routes>
-          <Route path="/"           element={<Home />} />
-          <Route path="/projects"   element={<ProjectList />} />
-          <Route path="/blog"       element={<BlogList />} />
-          <Route path="/blog/:slug" element={<BlogPost />} />
-          <Route path="*"           element={<NotFound />} />
+        <Route path="/"              element={<Home />} />
+        <Route path="/projects"      element={<ProjectList />} />
+        <Route path="/games"         element={<GameList />} />
+        <Route path="/games/:slug"   element={<GamePage />} />
+        <Route path="/blog"          element={<BlogList />} />
+        <Route path="/blog/:slug"    element={<BlogPost />} />
+        <Route path="*"              element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </>
