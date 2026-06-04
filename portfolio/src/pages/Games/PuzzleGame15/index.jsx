@@ -67,7 +67,7 @@ export default function PuzzleGame15() {
 
   return (
     <div className="h-screen flex text-gray-300 bg-gray-950">
-      <div className="mx-auto mt-8">
+      <div className="mx-auto mt-8 max-w-[464px]">
         {win && (
           <div className="rounded-md border-l-4 border-green-500 bg-green-100 p-2 mb-2">
             <div className="flex items-center justify-center space-x-4">
@@ -82,10 +82,13 @@ export default function PuzzleGame15() {
         text-center bg-clip-text 
         text-transparent bg-gradient-to-r 
         from-indigo-500 from-10% via-sky-500 
-        via-30% to-emerald-500 to-90%"
+        via-30% to-emerald-500 to-90% mb-2"
         >
           15 Puzzle Game
         </h3>
+        <p className="font-mono text-[13px] text-slate-500 mb-12 text-center">
+          The classic sliding tile puzzle — arrange 15 numbered tiles into order using the empty space.
+        </p>
         <div className="flex justify-between px-6 mt-2">
           <p>Moves: {moves}</p>
           <Timer time={time} timerActive={timerActive} setTime={setTime} />
