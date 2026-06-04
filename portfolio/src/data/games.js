@@ -24,7 +24,16 @@ export const GAMES = [
     highlight: "#00ff9d",
     component: lazy(() => import("../pages/Games/MemoryGame/index.jsx")),
   },
-
+  {
+    slug:      "2048",
+    name:      "2048",
+    desc:      "Slide tiles to merge numbers and reach 2048. Keyboard arrows on desktop, swipe gestures on mobile. Tracks your best score in localStorage.",
+    tags:      ["React", "useReducer", "Custom Hook", "Touch Events"],
+    emoji:     "🎯",
+    status:    "live",
+    highlight: "#7b5ea7",
+    component: lazy(() => import("../pages/Games/Game2048/index.jsx")),
+  },
   // Add new game → copy paste block below, uncomment, fill in:
   // {
   //   slug:      "snake",
