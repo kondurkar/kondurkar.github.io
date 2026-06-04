@@ -95,6 +95,25 @@ function renderContent(content) {
       i++; continue;
     }
 
+    // Unordered list without bullets
+    if (line.match(/^\. /)) {
+      const items = [];
+      while (i < lines.length && lines[i].match(/^\. /)) {
+        items.push(lines[i].slice(2));
+        i++;
+      }
+      elements.push(
+        <ul key={key()} className="my-4 space-y-2 pl-4">
+          {items.map((item, idx) => (
+            <li key={idx} className="text-slate-400 text-[15px] leading-relaxed flex gap-2">
+              <span>{inlineFormat(item)}</span>
+            </li>
+          ))}
+        </ul>
+      );
+      continue;
+    }
+
     // Unordered list
     if (line.match(/^[-*] /)) {
       const items = [];

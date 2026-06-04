@@ -187,13 +187,13 @@ const [email, setEmail] = useState('');
 
 ## Quick Wins Checklist
 
-- ✅ Add \`key\` props to lists (use stable IDs, not array index)
-- ✅ Avoid inline object/array/function props on frequently-rendered components
-- ✅ Use \`React.memo\` on pure presentational components
-- ✅ Split large bundles with \`React.lazy\`
-- ✅ Virtualize lists over 100 items
-- ✅ Move expensive context into separate providers
-- ✅ Profile before and after every optimization
+. ✅ Add \`key\` props to lists (use stable IDs, not array index)
+. ✅ Avoid inline object/array/function props on frequently-rendered components
+. ✅ Use \`React.memo\` on pure presentational components
+. ✅ Split large bundles with \`React.lazy\`
+. ✅ Virtualize lists over 100 items
+. ✅ Move expensive context into separate providers
+. ✅ Profile before and after every optimization
 
 ## Summary
 
