@@ -1,5 +1,3 @@
-// src/pages/Games/Sudoku/sudokuLogic.js
-
 // Check if placing num at (row, col) is valid
 function isValid(board, row, col, num) {
   // Row check

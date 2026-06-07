@@ -142,7 +142,7 @@ export default function Hangman() {
       )}
 
       {/* Keyboard */}
-      <div className="flex flex-col gap-1.5 w-full max-w-sm">
+      <div className="flex flex-col gap-1.5 w-full max-w-[396px]">
         {["QWERTYUIOP","ASDFGHJKL","ZXCVBNM"].map((row, ri) => (
           <div key={ri} className="flex gap-1 justify-center flex-wrap">
             {row.split("").map(l => {
