@@ -72,12 +72,8 @@ export function generatePuzzle(difficulty = "medium") {
     if (removed >= target) break;
     const r = Math.floor(idx / 9);
     const c = idx % 9;
-    const backup = puzzle[r][c];
     puzzle[r][c] = 0;
     removed++;
-    // Simple check: don't validate unique solution for perf
-    // (good enough for a portfolio game)
-    _ = backup;
   }
 
   return { puzzle, solution: full };
