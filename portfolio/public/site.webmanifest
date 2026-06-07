@@ -1,19 +1,65 @@
 {
-  "name": "Yogesh Kondurkar Portfolio",
-  "short_name": "Portfolio of Yogesh Kondurkar — Senior Frontend Developer based in Mumbai",
+  "name": "Yogesh Kondurkar — Senior Frontend Developer",
+  "short_name": "Yogesh Kondurkar",
+  "description": "Senior Frontend Developer with 10+ years of experience in React, Angular, TypeScript and modern web technologies. Based in Mumbai, India.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#080c10",
+  "background_color": "#080c10",
+  "lang": "en",
+  "dir": "ltr",
+  "categories": ["portfolio", "technology", "developer"],
   "icons": [
     {
       "src": "/android-chrome-192x192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
       "src": "/android-chrome-512x512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
-  "theme_color": "#080c10",
-  "background_color": "#080c10",
-  "display": "standalone"
+  "screenshots": [
+    {
+      "src": "/og-image.png",
+      "sizes": "1200x630",
+      "type": "image/png",
+      "label": "Yogesh Kondurkar Portfolio"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Projects",
+      "short_name": "Projects",
+      "description": "View all projects",
+      "url": "/projects",
+      "icons": [{ "src": "/android-chrome-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Blog",
+      "short_name": "Blog",
+      "description": "Read frontend engineering articles",
+      "url": "/blog",
+      "icons": [{ "src": "/android-chrome-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Games",
+      "short_name": "Games",
+      "description": "Play React games",
+      "url": "/games",
+      "icons": [{ "src": "/android-chrome-192x192.png", "sizes": "192x192" }]
+    }
+  ]
 }
