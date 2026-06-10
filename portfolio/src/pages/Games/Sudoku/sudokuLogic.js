@@ -114,3 +114,54 @@ export function getConflicts(board) {
   }
   return conflicts;
 }
+
+// Valid candidates for a cell (numbers not already in row/col/box)
+export function getValidCandidates(board, r, c) {
+  if (board[r][c] !== 0) return new Set();
+  const used = new Set();
+  for (let i = 0; i < 9; i++) {
+    if (board[r][i]) used.add(board[r][i]);   // row
+    if (board[i][c]) used.add(board[i][c]);   // col
+  }
+  const br = Math.floor(r / 3) * 3;
+  const bc = Math.floor(c / 3) * 3;
+  for (let rr = br; rr < br + 3; rr++)
+    for (let cc = bc; cc < bc + 3; cc++)
+      if (board[rr][cc]) used.add(board[rr][cc]);
+  const candidates = new Set();
+  for (let n = 1; n <= 9; n++) if (!used.has(n)) candidates.add(n);
+  return candidates;
+}
+
+// Build full note map for all empty cells
+export function buildAllNotes(board) {
+  const notes = {};
+  for (let r = 0; r < 9; r++)
+    for (let c = 0; c < 9; c++)
+      if (board[r][c] === 0) {
+        const cands = getValidCandidates(board, r, c);
+        if (cands.size) notes[`${r}-${c}`] = cands;
+      }
+  return notes;
+}
+
+// After placing num at (r,c), remove that num from notes of
+// all cells in the same row, col, and box
+export function pruneNotes(notes, board, r, c, num) {
+  const next = {};
+  for (const [key, set] of Object.entries(notes)) {
+    const [nr, nc] = key.split("-").map(Number);
+    const sameRow = nr === r;
+    const sameCol = nc === c;
+    const sameBox = Math.floor(nr/3) === Math.floor(r/3) &&
+                    Math.floor(nc/3) === Math.floor(c/3);
+    if (sameRow || sameCol || sameBox) {
+      const pruned = new Set(set);
+      pruned.delete(num);
+      if (pruned.size) next[key] = pruned;
+    } else {
+      next[key] = set;
+    }
+  }
+  return next;
+}
