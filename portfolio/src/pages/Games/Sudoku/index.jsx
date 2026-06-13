@@ -416,14 +416,13 @@ export default function Sudoku() {
     setHistory(h => [...h.slice(-29), {
       board: board.map(row => [...row]),
       notes: Object.fromEntries(Object.entries(notes).map(([k,v]) => [k, new Set(v)])),
-      mistakes,
     }]);
 
     const next = board.map(row => [...row]);
     next[r][c] = num;
     setBoard(next);
 
-    // Mistake: wrong answer increments counter (correctable by erasing)
+    // Mistake: wrong answer permanently increments counter — cannot be undone by erasing
     if (num !== solution[r][c]) {
       setMistakes(m => m + 1);
     }
@@ -459,17 +458,12 @@ export default function Sudoku() {
     setHistory(h => [...h.slice(-29), {
       board: board.map(row => [...row]),
       notes: Object.fromEntries(Object.entries(notes).map(([k,v]) => [k, new Set(v)])),
-      mistakes,
     }]);
     const next = board.map(row => [...row]);
-    // If erasing a wrong value, decrement mistake counter
-    if (board[r][c] !== 0 && board[r][c] !== solution[r][c]) {
-      setMistakes(m => Math.max(0, m - 1));
-    }
     next[r][c] = 0;
     setBoard(next);
     setNotes(prev => ({ ...prev, [selected]: new Set() }));
-  }, [selected, board, puzzle, notes, gameStatus, mistakes, solution]);
+  }, [selected, board, puzzle, notes, gameStatus, mistakes]);
 
   // ── Hint: place correct value directly ──────────────────────
   const handleHint = useCallback(() => {
@@ -504,7 +498,6 @@ export default function Sudoku() {
     setHistory(h => [...h.slice(-29), {
       board: board.map(row => [...row]),
       notes: Object.fromEntries(Object.entries(notes).map(([k,v]) => [k, new Set(v)])),
-      mistakes,
     }]);
     const next = board.map(row => [...row]);
     next[r][c] = correct;
@@ -542,7 +535,7 @@ export default function Sudoku() {
     const prev = history[history.length - 1];
     setBoard(prev.board);
     setNotes(prev.notes);
-    setMistakes(prev.mistakes);
+    // mistakes intentionally NOT restored — errors are permanent
     setHistory(h => h.slice(0, -1));
   }, [history]);
 
