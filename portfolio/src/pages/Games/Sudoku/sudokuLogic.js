@@ -55,7 +55,9 @@ function generateFull() {
   return board;
 }
 
-const CLUES = { easy: 36, medium: 27, hard: 20 };
+// ── CONFIGURABLE: number of revealed clue cells per difficulty ──
+// Higher = easier. Range: ~25 (very hard) to ~55 (very easy)
+const CLUES = { easy: 46, medium: 36, hard: 26 };
 
 // Remove cells to create a puzzle
 export function generatePuzzle(difficulty = "medium") {
@@ -114,6 +116,8 @@ export function getConflicts(board) {
   }
   return conflicts;
 }
+
+// ── Note helpers ─────────────────────────────────────────────
 
 // Valid candidates for a cell (numbers not already in row/col/box)
 export function getValidCandidates(board, r, c) {

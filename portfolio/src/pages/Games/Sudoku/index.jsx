@@ -8,10 +8,13 @@ import {
 // ── Config ───────────────────────────────────────────────────
 const DIGITS = [1,2,3,4,5,6,7,8,9];
 
+// ── CONFIGURABLE DIFFICULTY ─────────────────────────────────
+// clues: must match sudokuLogic.js CLUES values
+// hints: 99 = unlimited, 0 = none
 const DIFF_CONFIG = {
-  easy:   { label: "Easy",      clues: 36, maxErrors: 5, autoNotes: true,  hints: 99, color: "emerald" },
-  medium: { label: "Medium",    clues: 27, maxErrors: 4, autoNotes: false, hints: 3,  color: "amber"   },
-  hard:   { label: "Nightmare", clues: 20, maxErrors: 3, autoNotes: false, hints: 0,  color: "red"     },
+  easy:   { label: "Easy",      clues: 46, autoNotes: true,  hints: 99, color: "emerald" },
+  medium: { label: "Medium",    clues: 36, autoNotes: false, hints: 3,  color: "amber"   },
+  hard:   { label: "Nightmare", clues: 26, autoNotes: false, hints: 0,  color: "red"     },
 };
 
 const COLOR = {
@@ -78,7 +81,7 @@ function DifficultyPicker({ onStart }) {
                           ${col.border} ${col.hover}`}>
               <span className={`font-display font-extrabold text-[1.3rem] ${col.text}`}>{cfg.label}</span>
               <div className="flex flex-col items-center gap-0.5">
-                <span className="font-mono text-[11px] text-slate-500">{cfg.clues} clues · {cfg.maxErrors} errors</span>
+                <span className="font-mono text-[11px] text-slate-500">{cfg.clues} clues revealed</span>
                 {cfg.autoNotes && <span className="font-mono text-[10px] text-cyan-400">Auto notes ✓</span>}
                 {cfg.hints > 0 && cfg.hints < 99 && <span className="font-mono text-[10px] text-amber-400">{cfg.hints} hints</span>}
                 {cfg.hints === 0 && <span className="font-mono text-[10px] text-red-400">No hints</span>}
@@ -282,7 +285,7 @@ function GameOverlay({ type, difficulty, mistakes, elapsed, record, onNewGame, o
           {isWin ? "Solved!" : "Game Over"}
         </h2>
         <p className="font-mono text-[12px] text-slate-500 mb-4">
-          {isWin ? `${mins}:${secs} · ${mistakes} mistake${mistakes !== 1 ? "s" : ""}` : `${mistakes} errors — limit reached`}
+          {isWin ? `${mins}:${secs} · ${mistakes} error${mistakes !== 1 ? "s" : ""}` : `Puzzle abandoned with ${mistakes} error${mistakes !== 1 ? "s" : ""}`}
         </p>
 
         {/* Record */}
@@ -420,18 +423,9 @@ export default function Sudoku() {
     next[r][c] = num;
     setBoard(next);
 
-    let newMistakes = mistakes;
+    // Mistake: wrong answer increments counter (correctable by erasing)
     if (num !== solution[r][c]) {
-      newMistakes = mistakes + 1;
-      setMistakes(newMistakes);
-      // Loss check
-      if (newMistakes >= cfg.maxErrors) {
-        setTimerOn(false);
-        setGameStatus("lost");
-        const newRec = updateRecord(difficulty, "loss");
-        setRecord(newRec);
-        return;
-      }
+      setMistakes(m => m + 1);
     }
 
     const prunedNotes = pruneNotes(notes, next, r, c, num);
@@ -468,16 +462,42 @@ export default function Sudoku() {
       mistakes,
     }]);
     const next = board.map(row => [...row]);
+    // If erasing a wrong value, decrement mistake counter
+    if (board[r][c] !== 0 && board[r][c] !== solution[r][c]) {
+      setMistakes(m => Math.max(0, m - 1));
+    }
     next[r][c] = 0;
     setBoard(next);
     setNotes(prev => ({ ...prev, [selected]: new Set() }));
-  }, [selected, board, puzzle, notes, gameStatus, mistakes]);
+  }, [selected, board, puzzle, notes, gameStatus, mistakes, solution]);
 
   // ── Hint: place correct value directly ──────────────────────
   const handleHint = useCallback(() => {
-    if (!selected || gameStatus !== "playing") return;
+    if (gameStatus !== "playing") return;
     if (hintsLeft <= 0 && cfg.hints !== 99) return;
-    const [r, c] = selected.split("-").map(Number);
+
+    // Find target cell: use selected if it's empty, otherwise find first wrong/empty cell
+    let hintKey = null;
+    if (selected) {
+      const [sr, sc] = selected.split("-").map(Number);
+      if (puzzle[sr][sc] === 0 && board[sr][sc] === 0) {
+        hintKey = selected;
+      }
+    }
+    // If no valid selected cell, find first empty non-clue cell
+    if (!hintKey) {
+      outer: for (let r = 0; r < 9; r++) {
+        for (let c = 0; c < 9; c++) {
+          if (puzzle[r][c] === 0 && board[r][c] === 0) {
+            hintKey = `${r}-${c}`;
+            break outer;
+          }
+        }
+      }
+    }
+    if (!hintKey) return;
+
+    const [r, c] = hintKey.split("-").map(Number);
     if (puzzle[r][c] !== 0 || board[r][c] !== 0) return;
 
     const correct = solution[r][c];
@@ -489,7 +509,8 @@ export default function Sudoku() {
     const next = board.map(row => [...row]);
     next[r][c] = correct;
     setBoard(next);
-    setNotes(prev => pruneNotes({ ...prev, [`${r}-${c}`]: new Set() }, next, r, c, correct));
+    setSelected(hintKey); // highlight the hinted cell
+    setNotes(prev => pruneNotes({ ...prev, [hintKey]: new Set() }, next, r, c, correct));
     if (cfg.hints !== 99) setHintsLeft(h => h - 1);
 
     // Win check
@@ -642,8 +663,8 @@ export default function Sudoku() {
         </div>
         <div className="flex items-center gap-3">
           <span className="font-mono text-[12px] text-slate-400">
-            Mistake: <span className={mistakes >= cfg.maxErrors - 1 ? "text-red-400 font-bold" : "text-slate-300"}>
-              {mistakes}/{cfg.maxErrors}
+            Errors: <span className={mistakes > 4 ? "text-red-400 font-bold" : mistakes > 2 ? "text-amber-400" : "text-slate-300"}>
+              {mistakes}
             </span>
           </span>
           <span className="font-mono text-[12px] text-slate-300 tabular-nums">{mins}:{secs}</span>
@@ -736,7 +757,7 @@ export default function Sudoku() {
       </div>
 
       {/* ── Win/Loss overlay ── */}
-      {(gameStatus === "won" || gameStatus === "lost") && (
+      {gameStatus === "won" && (
         <GameOverlay
           type={gameStatus === "won" ? "win" : "loss"}
           difficulty={difficulty}
