@@ -2,6 +2,16 @@ import { lazy } from "react";
 
 export const GAMES = [
   {
+    slug:      "sudoku",
+    name:      "Sudoku",
+    desc:      "Generated 9×9 puzzle with 3 difficulty levels, notes mode, conflict highlighting, hints, and a live timer.",
+    tags:      ["React", "Backtracking", "Algorithm", "Puzzle"],
+    emoji:     "🔢",
+    status:    "live",
+    highlight: "#7b5ea7",
+    component: lazy(() => import("../pages/Games/Sudoku/index.jsx")),
+  },
+  {
     slug:      "15-puzzle",
     name:      "15 Puzzle",
     desc:      "Arrange 15 numbered tiles into order using the empty space. Tap, swipe, or use arrow keys. Built with React hooks.",
@@ -62,16 +72,6 @@ export const GAMES = [
     component: lazy(() => import("../pages/Games/Wordle/index.jsx")),
   },
   {
-    slug:      "sudoku",
-    name:      "Sudoku",
-    desc:      "Generated 9×9 puzzle with 3 difficulty levels, notes mode, conflict highlighting, hints, and a live timer.",
-    tags:      ["React", "Backtracking", "Algorithm", "Puzzle"],
-    emoji:     "🔢",
-    status:    "live",
-    highlight: "#7b5ea7",
-    component: lazy(() => import("../pages/Games/Sudoku/index.jsx")),
-  },
-  {
     slug: "dice-roller", 
     name: "Dice Roller",
     desc: "Roll up to 5 dice with custom sides (d4–d20). Presets, animated rolls, and history.",
@@ -120,5 +120,15 @@ export const GAMES = [
     status: "live", 
     highlight: "#f43f5e",
     component: lazy(() => import("../pages/Games/Minesweeper/index.jsx")),
+  },
+  {
+    slug: "card28", 
+    name: "Card28",
+    desc: "",
+    tags: ["React"], 
+    emoji: "💣", 
+    status: "wip", 
+    highlight: "#3ff460",
+    component: lazy(() => import("../pages/Games/Card28/index.jsx")),
   },
 ];

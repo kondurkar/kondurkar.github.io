@@ -132,7 +132,7 @@ function SudokuCell({ r, c, val, puzzle, solution, isSelected, isHighlightRow,
             return (
               <span key={n}
                 className={`flex items-center justify-center font-mono leading-none
-                            text-[clamp(5px,1vw,9px)] transition-colors duration-100
+                            text-[clamp(10px,2vw,13px)] transition-colors duration-100
                             ${!inNote        ? "text-transparent"         : ""}
                             ${inNote && isHL ? "text-white font-bold"     : ""}
                             ${inNote && !isHL? "text-cyan-400 opacity-70" : ""}`}>
