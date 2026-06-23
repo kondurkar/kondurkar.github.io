@@ -1,11 +1,34 @@
 // src/pages/Games/Card28/BiddingPanel.jsx
 import { MIN_BID, MAX_BID } from "./gameEngine";
 
-export default function BiddingPanel({ state, isHumanTurn, onBid, onPass }) {
+export default function BiddingPanel({ state, isHumanTurn, onBid, onPass, onSetDouble }) {
   const minNext = Math.max(MIN_BID, state.currentBid.amount + 1);
 
   return (
     <div className="w-full max-w-sm bg-[#141c26] border border-cyan-500/15 rounded-2xl p-5">
+
+      {/* Double / Single toggle — only meaningful for 4P team games */}
+      {state.playerCount === 4 && (
+        <div className="flex items-center justify-center gap-2 mb-4">
+          <button onClick={() => onSetDouble(false)}
+            className={`font-mono text-[11px] tracking-widest px-4 py-1.5 rounded-sm border
+                        transition-all duration-200
+                        ${!state.isDouble
+                          ? "bg-cyan-400 text-black border-cyan-400"
+                          : "text-slate-500 border-cyan-500/15 hover:border-cyan-400"}`}>
+            Single
+          </button>
+          <button onClick={() => onSetDouble(true)}
+            className={`font-mono text-[11px] tracking-widest px-4 py-1.5 rounded-sm border
+                        transition-all duration-200
+                        ${state.isDouble
+                          ? "bg-red-500 text-white border-red-500 shadow-[0_0_12px_rgba(239,68,68,0.5)]"
+                          : "text-slate-500 border-cyan-500/15 hover:border-red-400"}`}>
+            🔥 Double
+          </button>
+        </div>
+      )}
+
       <div className="text-center mb-4">
         <p className="font-mono text-[11px] text-slate-500 tracking-widest uppercase mb-1">Bidding Phase</p>
         <p className="font-display text-[1.3rem] font-bold text-slate-100">
@@ -14,6 +37,9 @@ export default function BiddingPanel({ state, isHumanTurn, onBid, onPass }) {
             : "No bids yet"
           }
         </p>
+        {state.isDouble && (
+          <p className="font-mono text-[10px] text-red-400 mt-1">Stakes are DOUBLED this round</p>
+        )}
       </div>
 
       {/* Bid history */}

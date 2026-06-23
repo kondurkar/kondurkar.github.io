@@ -71,6 +71,7 @@ export const ACTIONS = {
   PICK_TRUMP:         "PICK_TRUMP",
   PLAY_CARD:          "PLAY_CARD",
   ACKNOWLEDGE_CANCEL: "ACKNOWLEDGE_CANCEL",
+  CLAIM_ROUND:        "CLAIM_ROUND",
 };
 
 function nextPlayerIndex(idx, count) {
@@ -263,6 +264,13 @@ export function applyAction(state, action) {
 
     case ACTIONS.ACKNOWLEDGE_CANCEL: {
       return applyAction({ ...state, phase: PHASES.DEALING }, { type: ACTIONS.START_ROUND });
+    }
+
+    case ACTIONS.CLAIM_ROUND: {
+      // Outcome is already mathematically certain — skip remaining tricks,
+      // resolve the round using current live points as final.
+      if (state.phase !== PHASES.PLAYING) return state;
+      return log(finishRound(state), "Round claimed early — outcome was already certain");
     }
 
     default:

@@ -2,12 +2,16 @@
 import { useState } from "react";
 import { useGame28 } from "./useGame28";
 import { PHASES } from "./gameEngine";
+import { checkRoundCertainty } from "./roundCertainty";
 import PlayingCard from "./Card";
 import PlayerSeat from "./PlayerSeat";
 import TrickArea from "./TrickArea";
 import BiddingPanel from "./BiddingPanel";
 import TrumpPicker from "./TrumpPicker";
 import RoundEndModal from "./RoundEndModal";
+import GameEndModal from "./GameEndModal";
+import CancelledModal from "./CancelledModal";
+import ScoreBoard from "./ScoreBoard";
 
 // ── Mode picker ──────────────────────────────────────────────
 function ModePicker({ onStart }) {
@@ -62,7 +66,11 @@ function RulesPanel() {
           <p><strong className="text-cyan-400">Bidding:</strong> Starting from 16, players bid how many points they'll win. Highest bidder picks trump.</p>
           <p><strong className="text-cyan-400">Rank order:</strong> J &gt; 9 &gt; A &gt; 10 &gt; K &gt; Q &gt; 8 &gt; 7 (within a suit).</p>
           <p><strong className="text-cyan-400">Playing:</strong> Follow the lead suit if you can. Trump beats everything else.</p>
-          <p><strong className="text-cyan-400">Winning:</strong> The bidder's team must collect at least their bid amount in points.</p>
+          <p><strong className="text-cyan-400">Pair (K+Q of trump):</strong> If the bidder's team has it, their target drops by 4. If defenders have it, the target rises by 4.</p>
+          <p><strong className="text-cyan-400">Game points:</strong> 1 normally, 2 for bids of 21+, 3 for a Full House (winning all 28 points). Failing by more than half doubles the penalty.</p>
+          <p><strong className="text-cyan-400">Double:</strong> Doubles all game points won/lost this round.</p>
+          <p><strong className="text-cyan-400">Winning the game:</strong> First team to reach +6 (or opponent reaches −6) wins.</p>
+          <p><strong className="text-cyan-400">Cancelled rounds:</strong> Redealt if a hand has zero point-cards, or a full team has no trump.</p>
         </div>
       )}
     </div>
@@ -71,8 +79,10 @@ function RulesPanel() {
 
 // ── Main game screen ──────────────────────────────────────────
 function GameScreen({ playerCount, onExit }) {
-  const { state, humanHand, legalMoves, isHumanTurn, isHumanBidTurn,
+  const { state, displayTrick, humanHand, legalMoves, isHumanTurn, isHumanBidTurn,
           isHumanTrumpPick, actions } = useGame28(playerCount, "You");
+
+  const certainty = state.phase === PHASES.PLAYING ? checkRoundCertainty(state) : { isCertain: false };
 
   const seatPositions = {
     4: { 1: "left", 2: "top", 3: "right" },
@@ -104,6 +114,11 @@ function GameScreen({ playerCount, onExit }) {
         </div>
       </div>
 
+      {/* Live scoreboard — shows during bidding, trump-pick, and play */}
+      {state.phase !== PHASES.GAME_END && state.phase !== PHASES.CANCELLED && (
+        <ScoreBoard state={state} />
+      )}
+
       {/* Opponent seats (top/left/right) */}
       {(playerCount === 4 || playerCount === 3) && (
         <div className="w-full flex justify-center">
@@ -120,21 +135,16 @@ function GameScreen({ playerCount, onExit }) {
 
       <div className="w-full flex items-center justify-between gap-2">
         {/* Left seat */}
-        {state.players[1] && playerCount >= 3 ? (
-          <PlayerSeat player={state.players[1]} position="left"
-            isCurrentTurn={state.currentTurn === 1 || state.biddingTurn === 1}
-            isDealer={state.dealerIndex === 1} isTrumpCaller={state.trumpCaller === 1}
-            cardCount={state.players[1].hand.length} />
-        ) : playerCount === 2 ? (
+        {state.players[1] && playerCount >= 2 ? (
           <PlayerSeat player={state.players[1]} position="left"
             isCurrentTurn={state.currentTurn === 1 || state.biddingTurn === 1}
             isDealer={state.dealerIndex === 1} isTrumpCaller={state.trumpCaller === 1}
             cardCount={state.players[1].hand.length} />
         ) : <div />}
 
-        {/* Trick area */}
+        {/* Trick area — uses displayTrick so the last bot's card is visible before clearing */}
         <div className="flex-1 max-w-md">
-          <TrickArea trick={state.currentTrick} playerCount={playerCount} trumpSuit={state.trumpSuit} />
+          <TrickArea trick={displayTrick} playerCount={playerCount} trumpSuit={state.trumpSuit} />
         </div>
 
         {/* Right seat (4P/3P only) */}
@@ -151,10 +161,24 @@ function GameScreen({ playerCount, onExit }) {
         ) : <div />}
       </div>
 
+      {/* Claim round — appears once outcome is mathematically certain */}
+      {certainty.isCertain && (
+        <div className="w-full max-w-sm bg-amber-400/10 border border-amber-400/30 rounded-xl p-4 text-center">
+          <p className="font-mono text-[11px] text-amber-400 mb-2">
+            {certainty.outcome === "won" ? "✅" : "❌"} {certainty.reason}
+          </p>
+          <button onClick={actions.claimRound}
+            className="bg-amber-400 hover:bg-amber-300 text-black font-mono text-[12px]
+                       tracking-widest px-6 py-2.5 rounded-sm transition-all duration-200">
+            Skip to Result →
+          </button>
+        </div>
+      )}
+
       {/* Bidding panel */}
       {state.phase === PHASES.BIDDING && (
         <BiddingPanel state={state} isHumanTurn={isHumanBidTurn}
-          onBid={actions.placeBid} onPass={actions.passBid} />
+          onBid={actions.placeBid} onPass={actions.passBid} onSetDouble={actions.setDouble} />
       )}
 
       {/* Trump picker */}
@@ -195,6 +219,16 @@ function GameScreen({ playerCount, onExit }) {
       {/* Round end modal */}
       {state.phase === PHASES.ROUND_END && (
         <RoundEndModal state={state} onNextRound={actions.nextRound} onNewGame={onExit} />
+      )}
+
+      {/* Game end modal — a team reached +6 or -6 */}
+      {state.phase === PHASES.GAME_END && (
+        <GameEndModal state={state} onNewGame={actions.resetGame} onExit={onExit} />
+      )}
+
+      {/* Cancelled round modal */}
+      {state.phase === PHASES.CANCELLED && (
+        <CancelledModal reason={state.cancelReason} onAcknowledge={actions.acknowledgeCancel} />
       )}
     </div>
   );
