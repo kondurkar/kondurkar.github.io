@@ -27,7 +27,7 @@ export default function PlayingCard({ card, faceDown, selected, disabled, small,
       disabled={disabled}
       className={`relative ${sizeCls} rounded-lg bg-[#f7f4ec] border-2 flex flex-col
                   items-center justify-between p-1.5 shrink-0 transition-all duration-150 select-none
-                  ${disabled ? "opacity-40 cursor-not-allowed grayscale" : "cursor-pointer hover:-translate-y-2"}
+                  ${disabled ? "opacity-70 cursor-not-allowed" : "cursor-pointer hover:-translate-y-2"}
                   ${selected ? "border-cyan-400 -translate-y-3 shadow-[0_0_18px_rgba(0,200,255,0.45)]" : "border-slate-300"}
                  `}
     >
