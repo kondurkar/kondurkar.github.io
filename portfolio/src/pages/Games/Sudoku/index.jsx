@@ -134,7 +134,7 @@ function SudokuCell({ r, c, val, puzzle, solution, isSelected, isHighlightRow,
                 className={`flex items-center justify-center font-mono leading-none
                             text-[clamp(10px,2vw,13px)] transition-colors duration-100
                             ${!inNote        ? "text-transparent"         : ""}
-                            ${inNote && isHL ? "text-white font-bold"     : ""}
+                            ${inNote && isHL ? "text-white font-bold bg-[#0068ff]"     : ""}
                             ${inNote && !isHL? "text-cyan-400 opacity-70" : ""}`}>
                 {n}
               </span>
@@ -641,7 +641,7 @@ export default function Sudoku() {
     <div
       ref={containerRef}
       className={`relative flex flex-col bg-[#080c10] text-slate-100
-                  ${fullscreen ? "fixed inset-0 z-[999] overflow-y-auto" : "w-full max-w-sm mx-auto pb-8"}`}
+                  ${fullscreen ? "fixed inset-0 z-[999] overflow-y-auto" : "w-full max-w-[480px] mx-auto pb-8"}`}
     >
       {/* ── Status bar ── */}
       <div className="flex items-center justify-between px-3 py-2 shrink-0">
