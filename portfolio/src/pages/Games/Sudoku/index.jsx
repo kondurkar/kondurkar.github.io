@@ -12,9 +12,9 @@ const DIGITS = [1,2,3,4,5,6,7,8,9];
 // clues: must match sudokuLogic.js CLUES values
 // hints: 99 = unlimited, 0 = none
 const DIFF_CONFIG = {
-  easy:   { label: "Easy",      clues: 46, autoNotes: true,  hints: 99, color: "emerald" },
-  medium: { label: "Medium",    clues: 36, autoNotes: false, hints: 3,  color: "amber"   },
-  hard:   { label: "Nightmare", clues: 26, autoNotes: false, hints: 0,  color: "red"     },
+  easy:   { label: "Easy",      clues: 40, autoNotes: true,  hints: 3, color: "emerald" },
+  medium: { label: "Medium",    clues: 35, autoNotes: false, hints: 3,  color: "amber"   },
+  hard:   { label: "Nightmare", clues: 30, autoNotes: false, hints: 3,  color: "red"     },
 };
 
 const COLOR = {

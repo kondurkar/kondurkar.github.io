@@ -57,7 +57,7 @@ function generateFull() {
 
 // ── CONFIGURABLE: number of revealed clue cells per difficulty ──
 // Higher = easier. Range: ~25 (very hard) to ~55 (very easy)
-const CLUES = { easy: 46, medium: 36, hard: 26 };
+const CLUES = { easy: 40, medium: 35, hard: 30 };
 
 // Remove cells to create a puzzle
 export function generatePuzzle(difficulty = "medium") {
