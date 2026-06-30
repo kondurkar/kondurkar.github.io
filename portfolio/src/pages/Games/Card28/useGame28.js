@@ -2,13 +2,13 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import {
   createInitialState, applyAction, startNextRound,
-  ACTIONS, PHASES, getLegalMoves,
+  ACTIONS, PHASES, getLegalMoves, canCallExpose,
 } from "./gameEngine";
-import { botDecideBid, botPickTrump, botDecideCard } from "./botAI";
+import { botDecideBid, botPickTrump, botDecideCard, botChooseTrumpStyle, botDecideExpose } from "./botAI";
 import { sortHand } from "./deck";
 
-const BOT_DELAY = 900;        // ms before a bot acts — lets you see what's happening
-const TRICK_CLEAR_DELAY = 1100; // ms to view the completed trick (incl. last bot's card) before it clears
+const BOT_DELAY = 900;          // ms before a bot acts — lets you see what's happening
+const TRICK_CLEAR_DELAY = 1100; // ms to view the completed trick before it clears
 
 export function useGame28(playerCount, humanName = "You") {
   const names = Array.from({ length: playerCount }, (_, i) =>
@@ -19,9 +19,8 @@ export function useGame28(playerCount, humanName = "You") {
     applyAction(createInitialState(playerCount, names), { type: ACTIONS.START_ROUND })
   );
 
-  // Holds the just-completed trick on screen briefly before the engine clears it
   const [pendingTrick, setPendingTrick] = useState(null);
-  const botTimeout   = useRef(null);
+  const botTimeout    = useRef(null);
   const clearTimeout_ = useRef(null);
 
   // ── Human actions ────────────────────────────────────────────
@@ -37,8 +36,16 @@ export function useGame28(playerCount, humanName = "You") {
     setState(s => applyAction(s, { type: ACTIONS.SET_DOUBLE, isDouble }));
   }, []);
 
+  const chooseTrumpStyle = useCallback((style) => {
+    setState(s => applyAction(s, { type: ACTIONS.CHOOSE_TRUMP_STYLE, style }));
+  }, []);
+
   const pickTrump = useCallback((suit) => {
     setState(s => applyAction(s, { type: ACTIONS.PICK_TRUMP, suit }));
+  }, []);
+
+  const callExpose = useCallback(() => {
+    setState(s => applyAction(s, { type: ACTIONS.CALL_EXPOSE, playerId: 0 }));
   }, []);
 
   // Wraps PLAY_CARD: if this play completes the trick, freeze the visual
@@ -50,7 +57,6 @@ export function useGame28(playerCount, humanName = "You") {
       const willComplete = s.currentTrick.length === s.playerCount - 1;
 
       if (willComplete) {
-        // Show the full trick (including this card) frozen for a moment
         const frozenTrick = [...s.currentTrick, { playerId, card }];
         setPendingTrick(frozenTrick);
         clearTimeout(clearTimeout_.current);
@@ -58,7 +64,7 @@ export function useGame28(playerCount, humanName = "You") {
           setPendingTrick(null);
           setState(s2 => applyAction(s2, { type: ACTIONS.PLAY_CARD, playerId, card }));
         }, TRICK_CLEAR_DELAY);
-        return s; // don't apply yet — wait for the timeout above
+        return s;
       }
 
       return applyAction(s, { type: ACTIONS.PLAY_CARD, playerId, card });
@@ -88,9 +94,9 @@ export function useGame28(playerCount, humanName = "You") {
   useEffect(() => {
     clearTimeout(botTimeout.current);
 
-    // Don't let bots act while a completed trick is being shown
-    if (pendingTrick) return;
+    if (pendingTrick) return; // don't let bots act while a completed trick is shown
 
+    // Bidding
     if (state.phase === PHASES.BIDDING && state.biddingTurn !== null && state.biddingTurn !== 0) {
       const botId = state.biddingTurn;
       botTimeout.current = setTimeout(() => {
@@ -105,6 +111,18 @@ export function useGame28(playerCount, humanName = "You") {
       }, BOT_DELAY);
     }
 
+    // Trump style choice (bot won the bid)
+    if (state.phase === PHASES.TRUMP_STYLE && state.trumpCaller !== 0) {
+      botTimeout.current = setTimeout(() => {
+        setState(s => {
+          if (s.phase !== PHASES.TRUMP_STYLE) return s;
+          const style = botChooseTrumpStyle(s, s.trumpCaller);
+          return applyAction(s, { type: ACTIONS.CHOOSE_TRUMP_STYLE, style });
+        });
+      }, BOT_DELAY);
+    }
+
+    // Trump suit pick (bot won the bid)
     if (state.phase === PHASES.TRUMP_PICK && state.trumpCaller !== 0) {
       botTimeout.current = setTimeout(() => {
         setState(s => {
@@ -119,14 +137,28 @@ export function useGame28(playerCount, humanName = "You") {
       }, BOT_DELAY);
     }
 
+    // Playing — bot may need to decide whether to call expose BEFORE playing
     if (state.phase === PHASES.PLAYING && state.currentTurn !== null && state.currentTurn !== 0) {
       const botId = state.currentTurn;
       botTimeout.current = setTimeout(() => {
         setState(s => {
           if (s.currentTurn !== botId || s.phase !== PHASES.PLAYING) return s;
+
+          // Closed trump, can't follow suit — bot decides whether to call expose
+          if (s.trumpStyle === "closed" && !s.trumpRevealed && canCallExpose(s, botId)) {
+            const shouldExpose = botDecideExpose(s, botId);
+            if (shouldExpose) {
+              const exposed = applyAction(s, { type: ACTIONS.CALL_EXPOSE, playerId: botId });
+              // After exposing, immediately decide + play the card (must play trump if held)
+              const card = botDecideCard(exposed, botId);
+              submitCard(botId, card);
+              return exposed; // intermediate state; submitCard's setState will follow
+            }
+          }
+
           const card = botDecideCard(s, botId);
           submitCard(botId, card);
-          return s; // submitCard handles its own setState
+          return s;
         });
       }, BOT_DELAY);
     }
@@ -137,16 +169,22 @@ export function useGame28(playerCount, humanName = "You") {
   useEffect(() => () => clearTimeout(clearTimeout_.current), []);
 
   // ── Derived helpers for UI ────────────────────────────────────
-  const humanHand = sortHand(state.players[0]?.hand ?? [], state.trumpSuit);
+  // IMPORTANT: only sort by trump suit grouping once trump is actually
+  // revealed to the human — otherwise the card ORDER in their hand would
+  // visually leak which suit is trump in closed mode.
+  const sortableTrump = state.trumpRevealed ? state.trumpSuit : null;
+  const humanHand = sortHand(state.players[0]?.hand ?? [], sortableTrump);
+
   const legalMoves = state.phase === PHASES.PLAYING
     ? getLegalMoves(state, 0).map(c => c.id)
     : [];
 
-  const isHumanTurn       = state.phase === PHASES.PLAYING && state.currentTurn === 0 && !pendingTrick;
-  const isHumanBidTurn    = state.phase === PHASES.BIDDING && state.biddingTurn === 0;
-  const isHumanTrumpPick  = state.phase === PHASES.TRUMP_PICK && state.trumpCaller === 0;
+  const isHumanTurn        = state.phase === PHASES.PLAYING && state.currentTurn === 0 && !pendingTrick;
+  const isHumanBidTurn     = state.phase === PHASES.BIDDING && state.biddingTurn === 0;
+  const isHumanTrumpStyle  = state.phase === PHASES.TRUMP_STYLE && state.trumpCaller === 0;
+  const isHumanTrumpPick   = state.phase === PHASES.TRUMP_PICK && state.trumpCaller === 0;
+  const canHumanCallExpose = isHumanTurn && canCallExpose(state, 0);
 
-  // What to actually show in the trick area — the frozen completed trick takes priority
   const displayTrick = pendingTrick ?? state.currentTrick;
 
   return {
@@ -156,7 +194,12 @@ export function useGame28(playerCount, humanName = "You") {
     legalMoves,
     isHumanTurn,
     isHumanBidTurn,
+    isHumanTrumpStyle,
     isHumanTrumpPick,
-    actions: { placeBid, passBid, setDouble, pickTrump, playCard, nextRound, resetGame, acknowledgeCancel, claimRound },
+    canHumanCallExpose,
+    actions: {
+      placeBid, passBid, setDouble, chooseTrumpStyle, pickTrump, callExpose,
+      playCard, nextRound, resetGame, acknowledgeCancel, claimRound,
+    },
   };
 }

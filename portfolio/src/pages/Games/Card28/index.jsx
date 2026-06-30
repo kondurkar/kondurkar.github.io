@@ -7,7 +7,7 @@ import PlayingCard from "./Card";
 import PlayerSeat from "./PlayerSeat";
 import TrickArea from "./TrickArea";
 import BiddingPanel from "./BiddingPanel";
-import TrumpPicker from "./TrumpPicker";
+import TrumpPicker, { TrumpStylePicker } from "./TrumpPicker";
 import RoundEndModal from "./RoundEndModal";
 import GameEndModal from "./GameEndModal";
 import CancelledModal from "./CancelledModal";
@@ -27,6 +27,7 @@ function ModePicker({ onStart }) {
         <h1 className="font-display text-[2.5rem] font-extrabold text-slate-100 mb-2">28</h1>
         <p className="font-mono text-[13px] text-slate-500 max-w-xs text-center">
           The classic South Indian trick-taking card game. Bid, pick trump, and win tricks.
+          Play Open or Closed trump — your choice each round.
         </p>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-lg">
@@ -65,12 +66,13 @@ function RulesPanel() {
           <p><strong className="text-cyan-400">Cards:</strong> 32 cards (7–A in each suit). J=3pts, 9=2pts, A=1pt, 10=1pt. Total = 28 points.</p>
           <p><strong className="text-cyan-400">Bidding:</strong> Starting from 16, players bid how many points they'll win. Highest bidder picks trump.</p>
           <p><strong className="text-cyan-400">Rank order:</strong> J &gt; 9 &gt; A &gt; 10 &gt; K &gt; Q &gt; 8 &gt; 7 (within a suit).</p>
-          <p><strong className="text-cyan-400">Playing:</strong> Follow the lead suit if you can. Trump beats everything else.</p>
+          <p><strong className="text-cyan-400">Open trump:</strong> The bidder reveals the trump suit to everyone immediately.</p>
+          <p><strong className="text-cyan-400">Closed trump:</strong> The bidder keeps trump hidden. The bidder can't lead trump unless forced. If you can't follow suit, you may discard safely (it can never win) — or call for trump to be exposed, after which you must play trump if you have one. Trump must be exposed within 7 tricks or the round is invalid.</p>
           <p><strong className="text-cyan-400">Pair (K+Q of trump):</strong> If the bidder's team has it, their target drops by 4. If defenders have it, the target rises by 4.</p>
           <p><strong className="text-cyan-400">Game points:</strong> 1 normally, 2 for bids of 21+, 3 for a Full House (winning all 28 points). Failing by more than half doubles the penalty.</p>
           <p><strong className="text-cyan-400">Double:</strong> Doubles all game points won/lost this round.</p>
           <p><strong className="text-cyan-400">Winning the game:</strong> First team to reach +6 (or opponent reaches −6) wins.</p>
-          <p><strong className="text-cyan-400">Cancelled rounds:</strong> Redealt if a hand has zero point-cards, or a full team has no trump.</p>
+          <p><strong className="text-cyan-400">Cancelled rounds:</strong> Redealt if a hand has zero point-cards, a full team has no trump, or closed trump is never exposed in time.</p>
         </div>
       )}
     </div>
@@ -80,7 +82,8 @@ function RulesPanel() {
 // ── Main game screen ──────────────────────────────────────────
 function GameScreen({ playerCount, onExit }) {
   const { state, displayTrick, humanHand, legalMoves, isHumanTurn, isHumanBidTurn,
-          isHumanTrumpPick, actions } = useGame28(playerCount, "You");
+          isHumanTrumpStyle, isHumanTrumpPick, canHumanCallExpose, actions } =
+    useGame28(playerCount, "You");
 
   const certainty = state.phase === PHASES.PLAYING ? checkRoundCertainty(state) : { isCertain: false };
 
@@ -89,6 +92,11 @@ function GameScreen({ playerCount, onExit }) {
     3: { 1: "left", 2: "right" },
     2: { 1: "top" },
   }[playerCount];
+
+  // Trump display in header: only show once genuinely revealed (open trump =
+  // immediate; closed trump = only after CALL_EXPOSE). Never read trumpSuit
+  // directly elsewhere in the UI before this gate.
+  const trumpKnownToUser = state.trumpSuit && state.trumpRevealed;
 
   return (
     <div className="flex flex-col items-center gap-4 pb-8 max-w-2xl mx-auto px-2 w-full">
@@ -102,9 +110,14 @@ function GameScreen({ playerCount, onExit }) {
                            px-2 py-0.5 rounded-sm">{playerCount}P</span>
         </div>
         <div className="flex items-center gap-3">
-          {state.trumpSuit && (
+          {trumpKnownToUser && (
             <span className="font-mono text-[11px] text-cyan-400">
               Trump: <span className="text-base">{state.trumpSuit}</span>
+            </span>
+          )}
+          {state.trumpStyle === "closed" && !state.trumpRevealed && (
+            <span className="font-mono text-[10px] text-amber-500 flex items-center gap-1">
+              🔒 Closed
             </span>
           )}
           <button onClick={onExit}
@@ -144,7 +157,13 @@ function GameScreen({ playerCount, onExit }) {
 
         {/* Trick area — uses displayTrick so the last bot's card is visible before clearing */}
         <div className="flex-1 max-w-md">
-          <TrickArea trick={displayTrick} playerCount={playerCount} trumpSuit={state.trumpSuit} />
+          <TrickArea
+            trick={displayTrick}
+            playerCount={playerCount}
+            trumpSuit={state.trumpSuit}
+            trumpStyle={state.trumpStyle}
+            trumpRevealed={state.trumpRevealed}
+          />
         </div>
 
         {/* Right seat (4P/3P only) */}
@@ -160,6 +179,20 @@ function GameScreen({ playerCount, onExit }) {
             cardCount={state.players[2].hand.length} />
         ) : <div />}
       </div>
+
+      {/* Call for trump exposure — closed trump, can't follow suit */}
+      {canHumanCallExpose && (
+        <div className="w-full max-w-sm bg-amber-500/8 border border-amber-500/25 rounded-xl p-3 text-center">
+          <p className="font-mono text-[11px] text-amber-400 mb-2">
+            You can't follow suit. Discard safely, or call to expose the hidden trump.
+          </p>
+          <button onClick={actions.callExpose}
+            className="bg-amber-500 hover:bg-amber-400 text-black font-mono text-[12px]
+                       tracking-widest px-6 py-2 rounded-sm transition-all duration-200">
+            🔓 Call for Trump Exposure
+          </button>
+        </div>
+      )}
 
       {/* Claim round — appears once outcome is mathematically certain */}
       {certainty.isCertain && (
@@ -181,7 +214,17 @@ function GameScreen({ playerCount, onExit }) {
           onBid={actions.placeBid} onPass={actions.passBid} onSetDouble={actions.setDouble} />
       )}
 
-      {/* Trump picker */}
+      {/* Trump style choice (Open vs Closed) */}
+      {state.phase === PHASES.TRUMP_STYLE && isHumanTrumpStyle && (
+        <TrumpStylePicker onChoose={actions.chooseTrumpStyle} />
+      )}
+      {state.phase === PHASES.TRUMP_STYLE && !isHumanTrumpStyle && (
+        <div className="font-mono text-[12px] text-slate-500 animate-pulse">
+          {state.players[state.trumpCaller]?.name} is deciding Open or Closed trump...
+        </div>
+      )}
+
+      {/* Trump suit picker */}
       {state.phase === PHASES.TRUMP_PICK && isHumanTrumpPick && (
         <TrumpPicker onPick={actions.pickTrump} />
       )}

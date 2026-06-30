@@ -1,8 +1,4 @@
 // src/pages/Games/Card28/gameEngine.js
-// Pure game-state engine for 28. Action-based reducer (Redux-style) —
-// this design makes future multiplayer sync straightforward: transmit
-// `action` objects, every client/host runs the identical reducer.
-
 import { createDeck, shuffle, dealInitial, dealRemaining, RANK_ORDER, CARD_POINTS } from "./deck";
 import {
   findPairHolder, adjustBidForPair, calculateGamePoints,
@@ -12,6 +8,7 @@ import {
 export const PHASES = {
   DEALING:      "dealing",
   BIDDING:      "bidding",
+  TRUMP_STYLE:  "trump_style",
   TRUMP_PICK:   "trump_pick",
   PLAYING:      "playing",
   ROUND_END:    "round_end",
@@ -50,6 +47,11 @@ export function createInitialState(playerCount = 4, names = null, isBot = null) 
     trumpSuit: null,
     trumpCaller: null,
     trumpRevealed: false,
+    trumpStyle: null,
+    closedTrumpCard: null,
+    trumpLedBefore: false,
+    exposeCalledBy: null,
+    tricksPlayedSinceTrumpHidden: 0,
     pairHolder: null,
     adjustedTarget: null,
     currentTrick: [],
@@ -68,7 +70,9 @@ export const ACTIONS = {
   PLACE_BID:          "PLACE_BID",
   PASS_BID:           "PASS_BID",
   SET_DOUBLE:         "SET_DOUBLE",
+  CHOOSE_TRUMP_STYLE: "CHOOSE_TRUMP_STYLE",
   PICK_TRUMP:         "PICK_TRUMP",
+  CALL_EXPOSE:        "CALL_EXPOSE",
   PLAY_CARD:          "PLAY_CARD",
   ACKNOWLEDGE_CANCEL: "ACKNOWLEDGE_CANCEL",
   CLAIM_ROUND:        "CLAIM_ROUND",
@@ -82,20 +86,64 @@ function log(state, message) {
   return { ...state, gameLog: [...state.gameLog.slice(-49), message] };
 }
 
+// ─────────────────────────────────────────────────────────────
+// getLegalMoves
+//
+// NOTE: the bidder-cannot-lead-trump-unless-forced restriction has been
+// intentionally REMOVED per house rules. The bidder (or anyone) may lead
+// trump on any trick, any time, in both Open and Closed trump modes.
+// ─────────────────────────────────────────────────────────────
 export function getLegalMoves(state, playerId) {
   const player = state.players[playerId];
   const hand = player.hand;
-  if (state.currentTrick.length === 0) return hand;
+
+  // Leading the trick — anyone may lead any card, trump included, always.
+  if (state.currentTrick.length === 0) {
+    return hand;
+  }
 
   const leadSuit = state.leadSuit;
   const hasLeadSuit = hand.some(c => c.suit === leadSuit);
-  if (hasLeadSuit) return hand.filter(c => c.suit === leadSuit);
+
+  if (hasLeadSuit) {
+    return hand.filter(c => c.suit === leadSuit);
+  }
+
+  // Can't follow suit.
+  if (state.trumpStyle === "closed" && state.exposeCalledBy === playerId) {
+    // This player just called for exposure — must play trump if they have any.
+    const trumpCards = hand.filter(c => c.suit === state.trumpSuit);
+    return trumpCards.length > 0 ? trumpCards : hand;
+  }
+
+  if (state.trumpStyle === "closed" && !state.trumpRevealed) {
+    // Trump still hidden, nobody called exposure this turn — discard freely,
+    // it cannot win the trick (enforced in resolveTrickWinner).
+    return hand;
+  }
+
+  // Open trump (or already-revealed closed trump): anything goes, and it
+  // CAN win normally via resolveTrickWinner.
   return hand;
 }
 
-function resolveTrickWinner(trick, trumpSuit, leadSuit) {
-  const trumpPlays = trick.filter(t => t.card.suit === trumpSuit);
-  const pool = trumpPlays.length > 0 ? trumpPlays : trick.filter(t => t.card.suit === leadSuit);
+export function canCallExpose(state, playerId) {
+  if (state.trumpStyle !== "closed" || state.trumpRevealed) return false;
+  if (state.currentTrick.length === 0) return false;
+  const hand = state.players[playerId].hand;
+  const hasLeadSuit = hand.some(c => c.suit === state.leadSuit);
+  return !hasLeadSuit;
+}
+
+function resolveTrickWinner(state, trick) {
+  const { trumpSuit, leadSuit, trumpStyle, trumpRevealed } = state;
+  const trumpIsLive = trumpStyle !== "closed" || trumpRevealed;
+
+  const trumpPlays = trumpIsLive ? trick.filter(t => t.card.suit === trumpSuit) : [];
+  const pool = trumpPlays.length > 0
+    ? trumpPlays
+    : trick.filter(t => t.card.suit === leadSuit);
+
   let winner = pool[0];
   for (const play of pool.slice(1)) {
     const a = RANK_ORDER.indexOf(play.card.rank);
@@ -136,6 +184,11 @@ export function applyAction(state, action) {
         trumpSuit: null,
         trumpCaller: null,
         trumpRevealed: false,
+        trumpStyle: null,
+        closedTrumpCard: null,
+        trumpLedBefore: false,
+        exposeCalledBy: null,
+        tricksPlayedSinceTrumpHidden: 0,
         pairHolder: null,
         adjustedTarget: null,
         currentTrick: [],
@@ -186,6 +239,13 @@ export function applyAction(state, action) {
       return next;
     }
 
+    case ACTIONS.CHOOSE_TRUMP_STYLE: {
+      const { style } = action;
+      if (state.phase !== PHASES.TRUMP_STYLE) return state;
+      return log({ ...state, phase: PHASES.TRUMP_PICK, trumpStyle: style },
+        `${state.players[state.trumpCaller].name} will play with trump ${style.toUpperCase()}`);
+    }
+
     case ACTIONS.PICK_TRUMP: {
       const { suit } = action;
       if (state.phase !== PHASES.TRUMP_PICK) return state;
@@ -193,37 +253,56 @@ export function applyAction(state, action) {
       const newHands = dealRemaining(state.remainingCards, state.players.map(p => p.hand), state.playerCount);
       let players = state.players.map((p, i) => ({ ...p, hand: newHands[i] }));
 
-      // Cancellation #1: any full 8-card hand worth 0 points
       const cancel1 = checkCancellation(players, null);
       if (cancel1.cancelled) {
         return log({ ...state, players, phase: PHASES.CANCELLED, cancelReason: cancel1.reason },
           `Round cancelled: ${cancel1.reason}`);
       }
 
-      // Cancellation #2: a full team has zero trump cards
       const cancel2 = checkCancellation(players, suit);
       if (cancel2.cancelled) {
         return log({ ...state, players, phase: PHASES.CANCELLED, cancelReason: cancel2.reason },
           `Round cancelled: ${cancel2.reason}`);
       }
 
-      // Pair detection (K+Q of trump) — 4P only
+      const isClosed = state.trumpStyle === "closed";
+      const closedTrumpCard = isClosed ? { suit } : null;
+
       const callerTeam = players[state.trumpCaller].team;
       const biddingTeamHands   = players.filter(p => p.team === callerTeam).map(p => p.hand);
       const defendingTeamHands = players.filter(p => p.team !== callerTeam).map(p => p.hand);
       const pairHolder = state.playerCount === 4
         ? findPairHolder(biddingTeamHands, defendingTeamHands, suit)
         : null;
-
       const adjustedTarget = pairHolder
         ? adjustBidForPair(state.currentBid.amount, pairHolder)
         : state.currentBid.amount;
+
+      if (isClosed) {
+        return log({
+          ...state,
+          players,
+          trumpSuit: suit,
+          trumpRevealed: false,
+          trumpLedBefore: false,
+          closedTrumpCard,
+          pairHolder,
+          adjustedTarget,
+          phase: PHASES.PLAYING,
+          currentTurn: state.trumpCaller,
+          currentTrick: [],
+          leadSuit: null,
+          remainingCards: [],
+        }, `${state.players[state.trumpCaller].name} sets trump face down (CLOSED)`);
+      }
 
       return log({
         ...state,
         players,
         trumpSuit: suit,
         trumpRevealed: true,
+        trumpLedBefore: false,
+        closedTrumpCard: null,
         pairHolder,
         adjustedTarget,
         phase: PHASES.PLAYING,
@@ -235,6 +314,19 @@ export function applyAction(state, action) {
           ? `Trump is ${suit} — Pair found! (${pairHolder} team, target now ${adjustedTarget})`
           : `Trump is ${suit}`
       );
+    }
+
+    case ACTIONS.CALL_EXPOSE: {
+      const { playerId } = action;
+      if (state.phase !== PHASES.PLAYING) return state;
+      if (state.trumpStyle !== "closed" || state.trumpRevealed) return state;
+      if (!canCallExpose(state, playerId)) return state;
+
+      return log({
+        ...state,
+        trumpRevealed: true,
+        exposeCalledBy: playerId,
+      }, `${state.players[playerId].name} calls for trump to be exposed — it's ${state.trumpSuit}!`);
     }
 
     case ACTIONS.PLAY_CARD: {
@@ -250,9 +342,12 @@ export function applyAction(state, action) {
       );
       const newTrick = [...state.currentTrick, { playerId, card }];
       const leadSuit = state.leadSuit ?? card.suit;
+      const isLeadingTrump = state.currentTrick.length === 0 && card.suit === state.trumpSuit;
 
-      let next = log({ ...state, players, currentTrick: newTrick, leadSuit },
-        `${state.players[playerId].name} plays ${card.rank}${card.suit}`);
+      let next = log({
+        ...state, players, currentTrick: newTrick, leadSuit,
+        trumpLedBefore: state.trumpLedBefore || isLeadingTrump,
+      }, `${state.players[playerId].name} plays ${card.rank}${card.suit}`);
 
       if (newTrick.length === state.playerCount) {
         next = resolveCompletedTrick(next);
@@ -267,8 +362,6 @@ export function applyAction(state, action) {
     }
 
     case ACTIONS.CLAIM_ROUND: {
-      // Outcome is already mathematically certain — skip remaining tricks,
-      // resolve the round using current live points as final.
       if (state.phase !== PHASES.PLAYING) return state;
       return log(finishRound(state), "Round claimed early — outcome was already certain");
     }
@@ -292,12 +385,12 @@ function finishBidding(state) {
   if (winner === null) {
     return { ...state, phase: PHASES.DEALING };
   }
-  return log({ ...state, phase: PHASES.TRUMP_PICK, trumpCaller: winner, biddingTurn: null },
+  return log({ ...state, phase: PHASES.TRUMP_STYLE, trumpCaller: winner, biddingTurn: null },
     `${state.players[winner].name} won the bid at ${state.currentBid.amount}`);
 }
 
 function resolveCompletedTrick(state) {
-  const winnerId = resolveTrickWinner(state.currentTrick, state.trumpSuit, state.leadSuit);
+  const winnerId = resolveTrickWinner(state, state.currentTrick);
   const points   = trickPoints(state.currentTrick);
 
   const players = state.players.map(p =>
@@ -312,8 +405,23 @@ function resolveCompletedTrick(state) {
     livePoints = { ...livePoints, [winnerId]: (livePoints[winnerId] ?? 0) + points };
   }
 
-  let next = log({ ...state, players, currentTrick: [], leadSuit: null, currentTurn: winnerId, livePoints },
-    `${state.players[winnerId].name} wins the trick (+${points} pts)`);
+  const isClosedHidden = state.trumpStyle === "closed" && !state.trumpRevealed;
+  const tricksHidden = isClosedHidden
+    ? state.tricksPlayedSinceTrumpHidden + 1
+    : state.tricksPlayedSinceTrumpHidden;
+
+  let next = log({
+    ...state, players, currentTrick: [], leadSuit: null, currentTurn: winnerId,
+    livePoints, exposeCalledBy: null, tricksPlayedSinceTrumpHidden: tricksHidden,
+  }, `${state.players[winnerId].name} wins the trick (+${points} pts)`);
+
+  if (isClosedHidden && tricksHidden >= 7) {
+    return log({
+      ...next,
+      phase: PHASES.CANCELLED,
+      cancelReason: "Closed trump was never exposed within the first 7 tricks — round invalid",
+    }, "Round invalid: trump never exposed in time");
+  }
 
   if (players[0].hand.length === 0) {
     next = finishRound(next);
@@ -337,12 +445,11 @@ function finishRound(state) {
     const finalGamePoints = gamePoints * stakeMultiplier;
 
     const teamScores = { ...state.teamScores };
-    if (won) {
-      teamScores[callerTeam] = clampScore(applyGamePoints(teamScores[callerTeam] ?? 0, finalGamePoints, true));
-    } else {
-      const otherTeam = callerTeam === 0 ? 1 : 0;
-      teamScores[otherTeam] = clampScore(applyGamePoints(teamScores[otherTeam] ?? 0, finalGamePoints, true));
-    }
+    // Opposing team's score NEVER changes — only the bidding team's own
+    // tally moves, up on a win, down on a loss.
+    teamScores[callerTeam] = clampScore(
+      applyGamePoints(teamScores[callerTeam] ?? 0, finalGamePoints, won)
+    );
 
     const gameOver = isGameOver(teamScores[0]) || isGameOver(teamScores[1]);
     const result = {

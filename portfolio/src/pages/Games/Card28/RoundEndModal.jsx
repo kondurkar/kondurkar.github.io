@@ -35,7 +35,7 @@ export default function RoundEndModal({ state, onNextRound, onNewGame }) {
                               ${result.pairHolder === "bidding"
                                 ? "text-emerald-400 bg-emerald-400/10 border-emerald-400/30"
                                 : "text-amber-400 bg-amber-400/10 border-amber-400/30"}`}>
-              ♛ Pair: {result.pairHolder === "bidding" ? "Bidder's side" : "Defenders"}
+              ♛ Pair: {result.pairHolder === "bidding" ? "Bidding Team" : "Opposing Team"}
             </span>
           )}
         </div>
@@ -44,7 +44,7 @@ export default function RoundEndModal({ state, onNextRound, onNewGame }) {
           <div className="my-4">
             <p className="font-mono text-[12px] text-slate-500 mb-1">
               Bid: {result.bidAmount}{result.adjustedTarget !== result.bidAmount && ` → target ${result.adjustedTarget}`}
-              {" "}by Team {result.callerTeam}
+              {" "}by {result.callerTeam === 0 ? "We" : "They"} (bidding team)
             </p>
             <p className="font-mono text-[13px] text-slate-300 mb-3">
               {result.gamePoints > 0 && (
@@ -59,11 +59,11 @@ export default function RoundEndModal({ state, onNextRound, onNewGame }) {
             <div className="grid grid-cols-2 gap-3">
               <div className="bg-[#141c26] border border-cyan-500/10 rounded-lg p-3">
                 <div className="font-display font-extrabold text-cyan-400 text-xl">{result.team0Points}</div>
-                <div className="font-mono text-[9px] text-slate-600 uppercase tracking-widest">Team 0</div>
+                <div className="font-mono text-[9px] text-slate-600 uppercase tracking-widest">We</div>
               </div>
               <div className="bg-[#141c26] border border-cyan-500/10 rounded-lg p-3">
                 <div className="font-display font-extrabold text-emerald-400 text-xl">{result.team1Points}</div>
-                <div className="font-mono text-[9px] text-slate-600 uppercase tracking-widest">Team 1</div>
+                <div className="font-mono text-[9px] text-slate-600 uppercase tracking-widest">They</div>
               </div>
             </div>
             <div className="flex justify-center gap-6 mt-4">

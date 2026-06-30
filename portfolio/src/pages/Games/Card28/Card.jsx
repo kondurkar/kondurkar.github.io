@@ -2,7 +2,6 @@
 import { SUIT_COLOR } from "./deck";
 
 export default function PlayingCard({ card, faceDown, selected, disabled, small, onClick }) {
-  // Bigger base sizes — small (opponent fan) vs normal (hand/trick)
   const sizeCls = small ? "w-11 h-16" : "w-16 h-24 sm:w-20 sm:h-28";
   const rankCls = small ? "text-[11px]" : "text-base sm:text-lg";
   const suitCls = small ? "text-lg" : "text-3xl sm:text-4xl";
@@ -18,7 +17,6 @@ export default function PlayingCard({ card, faceDown, selected, disabled, small,
     );
   }
 
-  // Both black suits get the same strong, crisp colour — no faded tint on clubs
   const colorCls = SUIT_COLOR[card.suit];
 
   return (
