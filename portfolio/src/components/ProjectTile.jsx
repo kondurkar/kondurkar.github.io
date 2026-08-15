@@ -23,7 +23,7 @@ export default function ProjectTile({ label, name, desc, tags, demo, github, sho
       {/* Content */}
       <div className="flex flex-col flex-1 p-5">
         {client && (
-          <span className="font-mono text-[10px] text-slate-600 tracking-[0.15em] uppercase mb-1.5">
+          <span className="font-mono text-[10px] text-slate-400 tracking-[0.15em] uppercase mb-1.5">
             {client}
           </span>
         )}
@@ -31,7 +31,7 @@ export default function ProjectTile({ label, name, desc, tags, demo, github, sho
                         group-hover:text-cyan-400 transition-colors duration-200">
           {name}
         </div>
-        <p className="text-[13px] text-slate-500 leading-[1.7] flex-1">{desc}</p>
+        <p className="text-[13px] text-slate-400 leading-[1.7] flex-1">{desc}</p>
 
         {/* Multi-site links */}
         {websites?.length > 0 && (
@@ -76,7 +76,7 @@ export default function ProjectTile({ label, name, desc, tags, demo, github, sho
               </a>
             )}
             {!showDemo && !showGithub && !websites?.length && (
-              <span className="font-mono text-[10px] text-slate-700 italic">Internal</span>
+              <span className="font-mono text-[10px] text-slate-400 italic">Internal</span>
             )}
           </div>
         </div>

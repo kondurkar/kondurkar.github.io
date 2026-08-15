@@ -36,14 +36,16 @@ function Home() {
       <BG />
       <CursorGlow />
       <Navbar />
-      <Hero />
-      <About />
-      <Skills />
-      <Experience />
-      <Projects />
-      <Games />
-      <Blog />
-      <Contact />
+      <main>
+        <Hero />
+        <About />
+        <Skills />
+        <Experience />
+        <Projects />
+        <Games />
+        <Blog />
+        <Contact />
+      </main>
       <Footer />
     </div>
   );

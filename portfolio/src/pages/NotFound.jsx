@@ -119,14 +119,14 @@ export default function NotFound() {
         <h2 className="font-display text-[1.4rem] font-bold text-slate-100 mb-3">
           This page doesn't exist
         </h2>
-        <p className="font-mono text-[13px] text-slate-500 leading-relaxed mb-2">
+        <p className="font-mono text-[13px] text-slate-400 leading-relaxed mb-2">
           The URL{" "}
           <code className="text-cyan-400 bg-cyan-400/10 px-1.5 py-0.5 rounded-sm">
             {location.pathname}
           </code>{" "}
           couldn't be found.
         </p>
-        <p className="font-mono text-[12px] text-slate-600 mb-10">
+        <p className="font-mono text-[12px] text-slate-400 mb-10">
           It may have been moved, deleted, or never existed.
         </p>
 
@@ -155,7 +155,7 @@ export default function NotFound() {
 
         {/* Quick nav */}
         <div className="border-t border-cyan-500/10 pt-8">
-          <p className="font-mono text-[11px] text-slate-600 tracking-widest uppercase mb-4">
+          <p className="font-mono text-[11px] text-slate-400 tracking-widest uppercase mb-4">
             Or go to
           </p>
           <div className="flex items-center justify-center gap-6">
@@ -163,7 +163,7 @@ export default function NotFound() {
               <Link
                 key={href}
                 to={href}
-                className="font-mono text-[12px] text-slate-500 no-underline
+                className="font-mono text-[12px] text-slate-400 no-underline
                            hover:text-cyan-400 transition-colors duration-200"
               >
                 <span className="text-cyan-400 mr-0.5 opacity-60">_</span>{label}
@@ -176,7 +176,7 @@ export default function NotFound() {
 
       {/* Bottom corner decoration */}
       <div className="absolute bottom-6 left-0 right-0 flex justify-center">
-        <span className="font-mono text-[11px] text-slate-700 tracking-widest">
+        <span className="font-mono text-[11px] text-slate-400 tracking-widest">
           kondurkar.github.io
         </span>
       </div>

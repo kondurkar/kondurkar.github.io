@@ -19,7 +19,7 @@ export default function About() {
             {ABOUT_PARAGRAPHS.map((p, i) => (
               <p
                 key={i}
-                className="text-slate-500 text-[15px] leading-[1.9]"
+                className="text-slate-400 text-[15px] leading-[1.9]"
                 dangerouslySetInnerHTML={{ __html: p }}
               />
             ))}
@@ -52,7 +52,7 @@ export default function About() {
               <div className="font-display text-[2.8rem] font-extrabold text-cyan-400 leading-none mb-1">
                 {num}
               </div>
-              <div className="font-mono text-[11px] text-slate-500 tracking-[0.1em] uppercase">
+              <div className="font-mono text-[11px] text-slate-400 tracking-[0.1em] uppercase">
                 {label}
               </div>
             </div>

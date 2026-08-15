@@ -31,7 +31,7 @@ export default function Projects() {
           View all {PROJECTS.length} projects →
         </Link>
       </div>
-      <p className="fade-up text-slate-500 text-[14px] mb-10 font-mono">
+      <p className="fade-up text-slate-400 text-[14px] mb-10 font-mono">
         A mix of client work, enterprise tools, and CMS platforms — some
         confidential, some live.
       </p>

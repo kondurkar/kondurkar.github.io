@@ -19,7 +19,7 @@ function BlogCard({ slug, date, readTime, title, excerpt, tags }) {
                       group-hover:text-cyan-400 transition-colors duration-200">
         {title}
       </div>
-      <p className="text-[14px] text-slate-500 leading-[1.7]">{excerpt}</p>
+      <p className="text-[14px] text-slate-400 leading-[1.7]">{excerpt}</p>
       <div className="flex flex-wrap gap-1.5 mt-4">
         {tags.map(tag => (
           <span key={tag} className="font-mono text-[11px] text-cyan-400 bg-cyan-400/8 border border-cyan-400/15 px-2.5 py-0.5 rounded-sm tracking-wide">

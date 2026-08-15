@@ -13,8 +13,8 @@ function TimelineItem({ date, role, company, desc, stack }) {
       />
       <div className="font-mono text-[12px] text-cyan-400 tracking-[0.1em] mb-1">{date}</div>
       <div className="font-display text-[1.2rem] font-bold text-slate-100 mb-0.5">{role}</div>
-      <div className="font-mono text-[13px] text-slate-500 mb-3">{company}</div>
-      <p className="text-slate-500 text-[15px] leading-[1.8]">{desc}</p>
+      <div className="font-mono text-[13px] text-slate-400 mb-3">{company}</div>
+      <p className="text-slate-400 text-[15px] leading-[1.8]">{desc}</p>
       <div className="flex flex-wrap gap-1.5 mt-3">
         {stack.map((t) => (
           <span

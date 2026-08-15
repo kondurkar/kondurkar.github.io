@@ -225,7 +225,7 @@ export default function BlogPost() {
         {/* Back */}
         <Link
           to="/blog"
-          className="inline-flex items-center gap-2 font-mono text-[12px] text-slate-500 no-underline
+          className="inline-flex items-center gap-2 font-mono text-[12px] text-slate-400 no-underline
                      hover:text-cyan-400 transition-colors duration-200 mb-10"
         >
           ← All articles
@@ -234,7 +234,7 @@ export default function BlogPost() {
         {/* Meta */}
         <div className="flex items-center gap-3 font-mono text-[12px] text-cyan-400 tracking-[0.1em] mb-4 flex-wrap">
           <span>{post.date}</span>
-          <span className="text-slate-700">·</span>
+          <span className="text-slate-400">·</span>
           <span>{post.readTime}</span>
         </div>
 
@@ -262,7 +262,7 @@ export default function BlogPost() {
           </div>
           <div>
             <div className="font-display font-semibold text-slate-100 mb-1">Yogesh Kondurkar</div>
-            <p className="text-slate-500 text-[13px] leading-relaxed">
+            <p className="text-slate-400 text-[13px] leading-relaxed">
               Senior Frontend Developer with 10+ years of experience. Writing about React, JavaScript, TypeScript, and everything frontend.
             </p>
             <a
@@ -284,7 +284,7 @@ export default function BlogPost() {
               className="block bg-[#141c26] border border-cyan-500/10 rounded p-5 no-underline
                          hover:border-cyan-500/25 transition-all duration-200 group"
             >
-              <div className="font-mono text-[11px] text-slate-600 mb-2">← Previous</div>
+              <div className="font-mono text-[11px] text-slate-400 mb-2">← Previous</div>
               <div className="font-display font-semibold text-[14px] text-slate-300 group-hover:text-cyan-400 transition-colors leading-snug">
                 {prev.title}
               </div>
@@ -296,7 +296,7 @@ export default function BlogPost() {
               className="block bg-[#141c26] border border-cyan-500/10 rounded p-5 no-underline
                          hover:border-cyan-500/25 transition-all duration-200 group sm:text-right"
             >
-              <div className="font-mono text-[11px] text-slate-600 mb-2">Next →</div>
+              <div className="font-mono text-[11px] text-slate-400 mb-2">Next →</div>
               <div className="font-display font-semibold text-[14px] text-slate-300 group-hover:text-cyan-400 transition-colors leading-snug">
                 {next.title}
               </div>

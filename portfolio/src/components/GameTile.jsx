@@ -44,7 +44,7 @@ export default function GameTile({ slug, name, desc, tags, emoji, status, highli
           </span>
         </div>
 
-        <p className="text-[13px] text-slate-500 leading-[1.7] flex-1">{desc}</p>
+        <p className="text-[13px] text-slate-400 leading-[1.7] flex-1">{desc}</p>
 
         <div className="flex flex-wrap gap-1.5 mt-4">
           {tags.map(t => (
@@ -59,6 +59,7 @@ export default function GameTile({ slug, name, desc, tags, emoji, status, highli
         <div className="mt-4 pt-3 border-t border-cyan-500/8">
           {isLive ? (
             <Link to={`/games/${slug}`}
+              aria-label={`Play ${name}`}
               className="flex items-center justify-center gap-2 bg-cyan-400 hover:bg-cyan-300
                          text-black font-mono text-[11px] tracking-widest px-4 py-2.5 rounded-sm
                          no-underline transition-all duration-200 hover:-translate-y-0.5
@@ -67,7 +68,7 @@ export default function GameTile({ slug, name, desc, tags, emoji, status, highli
             </Link>
           ) : (
             <div className="flex items-center justify-center font-mono text-[11px]
-                            text-slate-600 tracking-widest border border-slate-800 rounded-sm py-2.5 w-full">
+                            text-slate-400 tracking-widest border border-slate-800 rounded-sm py-2.5 w-full">
               {status === "wip" ? "🔧 In Progress" : "⏳ Coming Soon"}
             </div>
           )}

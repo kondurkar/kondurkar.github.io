@@ -44,7 +44,7 @@ export default function Hero() {
         </h1>
 
         {/* Subline */}
-        <p className="font-mono text-[15px] text-slate-500 mt-8 max-w-[520px] leading-[1.8]">
+        <p className="font-mono text-[15px] text-slate-400 mt-8 max-w-[520px] leading-[1.8]">
           {ME.subline.split(/(fast|accessible|visually sharp)/g).map((chunk, i) =>
             ["fast", "accessible", "visually sharp"].includes(chunk) ? (
               <span key={i} className="text-emerald-400">{chunk}</span>
@@ -77,7 +77,7 @@ export default function Hero() {
        
         {/* Status */}
         {ME.available && (
-          <div className="flex items-center gap-2 mt-12 font-mono text-[12px] text-slate-500">
+          <div className="flex items-center gap-2 mt-12 font-mono text-[12px] text-slate-400">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse
                              shadow-[0_0_0_0_rgba(0,255,157,0.4)]" />
             {ME.availableText}

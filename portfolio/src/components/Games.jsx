@@ -27,7 +27,7 @@ export default function Games() {
         )}
       </div>
 
-      <p className="text-slate-500 text-[14px] mb-10 font-mono">
+      <p className="text-slate-400 text-[14px] mb-10 font-mono">
         Fun experiments and interactive projects built with React — games, tools, and playgrounds.
       </p>
 

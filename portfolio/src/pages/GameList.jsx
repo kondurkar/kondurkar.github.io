@@ -42,7 +42,7 @@ export default function GameList() {
           <h1 className="font-display text-[clamp(2.5rem,5vw,4rem)] font-extrabold text-slate-100 leading-tight mb-4">
             Side Projects & Games
           </h1>
-          <p className="text-slate-500 text-[15px] max-w-[540px] leading-relaxed">
+          <p className="text-slate-400 text-[15px] max-w-[540px] leading-relaxed">
             Fun experiments built with React — sliding puzzles, memory games, and interactive playgrounds.
             All open source on GitHub.
           </p>
@@ -55,7 +55,7 @@ export default function GameList() {
               className={`font-mono text-[11px] tracking-widest px-4 py-1.5 rounded-sm border transition-all duration-200
                 ${activeStatus === s
                   ? "text-black bg-cyan-400 border-cyan-400"
-                  : "text-slate-500 bg-transparent border-cyan-500/15 hover:border-cyan-500/40 hover:text-slate-300"}`}>
+                  : "text-slate-400 bg-transparent border-cyan-500/15 hover:border-cyan-500/40 hover:text-slate-300"}`}>
               {s === "All" ? "All" : s === "live" ? "✅ Live" : s === "wip" ? "🔧 In Progress" : "⏳ Coming Soon"}
             </button>
           ))}
@@ -68,7 +68,7 @@ export default function GameList() {
               className={`font-mono text-[11px] tracking-widest px-4 py-1.5 rounded-sm border transition-all duration-200
                 ${activeTag === tag
                   ? "text-black bg-cyan-400 border-cyan-400"
-                  : "text-slate-500 bg-transparent border-cyan-500/15 hover:border-cyan-500/40 hover:text-slate-300"}`}>
+                  : "text-slate-400 bg-transparent border-cyan-500/15 hover:border-cyan-500/40 hover:text-slate-300"}`}>
               {tag}
             </button>
           ))}
@@ -82,13 +82,13 @@ export default function GameList() {
         </div>
 
         {filtered.length === 0 && (
-          <div className="text-center py-24 font-mono text-slate-600 text-[14px]">
+          <div className="text-center py-24 font-mono text-slate-400 text-[14px]">
             No games match this filter.
           </div>
         )}
 
         <div className="mt-14">
-          <Link to="/" className="font-mono text-[13px] text-slate-500 no-underline hover:text-cyan-400
+          <Link to="/" className="font-mono text-[13px] text-slate-400 no-underline hover:text-cyan-400
                                    transition-colors duration-200 flex items-center gap-2">
             ← Back to portfolio
           </Link>

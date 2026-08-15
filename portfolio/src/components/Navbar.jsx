@@ -15,7 +15,7 @@ function NavLink({ id, active, isHome, location, onClick }) {
 
   const cls = `font-mono text-[13px] tracking-widest no-underline transition-colors duration-200
                group flex items-center
-               ${isActive ? "text-cyan-400" : "text-slate-500 hover:text-slate-200"}`;
+               ${isActive ? "text-cyan-400" : "text-slate-400 hover:text-slate-200"}`;
 
   const accent = (
     <span className={`text-cyan-400 mr-0.5 transition-opacity duration-200
@@ -66,7 +66,7 @@ export default function Navbar() {
         {/* Logo */}
         <Link to="/" className="font-mono text-[15px] text-cyan-400 tracking-wide no-underline z-10">
           {firstName?.toLowerCase() || "your"}
-          <span className="text-slate-500">.{lastName?.toLowerCase() || "name"}</span>
+          <span className="text-slate-400">.{lastName?.toLowerCase() || "name"}</span>
         </Link>
 
         {/* Desktop nav */}

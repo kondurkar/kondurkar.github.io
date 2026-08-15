@@ -6,7 +6,7 @@ import SectionLabel from "./SectionLabel";
 function InputField({ label, id, type = "text", name, placeholder, errors }) {
   return (
     <div className="flex flex-col gap-1.5">
-      <label htmlFor={id} className="font-mono text-[12px] text-slate-500 tracking-[0.08em]">
+      <label htmlFor={id} className="font-mono text-[12px] text-slate-400 tracking-[0.08em]">
         {label}
       </label>
       <input
@@ -39,7 +39,7 @@ function ContactForm() {
       <div className="text-center py-16">
         <span className="block w-2.5 h-2.5 rounded-full bg-emerald-400 mx-auto mb-4 animate-pulse" />
         <p className="font-mono text-[13px] text-emerald-400 tracking-[0.2em]">MESSAGE_SENT</p>
-        <p className="text-slate-500 text-[14px] mt-2">I'll get back to you soon.</p>
+        <p className="text-slate-400 text-[14px] mt-2">I'll get back to you soon.</p>
       </div>
     );
   }
@@ -52,7 +52,7 @@ function ContactForm() {
       </div>
 
       <div className="flex flex-col gap-1.5">
-        <label htmlFor="subject" className="font-mono text-[12px] text-slate-500 tracking-[0.08em]">
+        <label htmlFor="subject" className="font-mono text-[12px] text-slate-400 tracking-[0.08em]">
           subject
         </label>
         <input
@@ -67,7 +67,7 @@ function ContactForm() {
       </div>
 
       <div className="flex flex-col gap-1.5">
-        <label htmlFor="message" className="font-mono text-[12px] text-slate-500 tracking-[0.08em]">
+        <label htmlFor="message" className="font-mono text-[12px] text-slate-400 tracking-[0.08em]">
           message
         </label>
         <textarea
@@ -128,7 +128,7 @@ export default function Contact() {
         <h2 ref={titleRef} className="fade-up font-display text-[clamp(2rem,4vw,3.2rem)] font-bold text-slate-100 mb-4">
           Let's Build Something
         </h2>
-        <p ref={subRef} className="fade-up text-slate-500 text-[15px]">
+        <p ref={subRef} className="fade-up text-slate-400 text-[15px]">
           Have a project in mind or just want to say hi? My inbox is always open.
         </p>
 
@@ -142,7 +142,7 @@ export default function Contact() {
               href={href}
               target={href.startsWith("mailto") ? undefined : "_blank"}
               rel="noopener noreferrer"
-              className="flex items-center gap-2 font-mono text-[13px] text-slate-500 no-underline
+              className="flex items-center gap-2 font-mono text-[13px] text-slate-400 no-underline
                          px-5 py-2.5 border border-cyan-500/10 rounded-sm transition-all duration-200
                          hover:text-cyan-400 hover:border-cyan-500/25 hover:bg-cyan-500/4"
             >

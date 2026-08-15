@@ -20,7 +20,7 @@ function SkillCard({ icon, name, desc, level, tags }) {
 
       <div className="text-[1.75rem] mb-3">{icon}</div>
       <div className="font-display font-semibold text-[15px] text-slate-100 mb-1">{name}</div>
-      <p className="text-[13px] text-slate-500 mt-1">{desc}</p>
+      <p className="text-[13px] text-slate-400 mt-1">{desc}</p>
 
       {/* Progress bar */}
       <div className="mt-3 h-[3px] rounded bg-white/5 overflow-hidden">
