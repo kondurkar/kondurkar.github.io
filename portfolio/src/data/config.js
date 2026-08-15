@@ -2,6 +2,13 @@
 //  PORTFOLIO CONFIG — edit everything here, nowhere else
 // ============================================================
 
+import WidgetsIcon from "@mui/icons-material/Widgets";
+import DataObjectIcon from "@mui/icons-material/DataObject";
+import PaletteIcon from "@mui/icons-material/Palette";
+import CableIcon from "@mui/icons-material/Cable";
+import ConstructionIcon from "@mui/icons-material/Construction";
+import SmartToyIcon from "@mui/icons-material/SmartToy";
+
 export const ME = {
   name: "Yogesh Kondurkar",
   role: "Senior Frontend Developer & UI Engineer",
@@ -33,42 +40,42 @@ export const ABOUT_PARAGRAPHS = [
 
 export const SKILLS = [
   {
-    icon: "⚛️",
+    icon: WidgetsIcon,
     name: "React.js & Angular",
     desc: "Component architecture, hooks, Redux, Context API, micro frontends",
     level: 97,
     tags: ["React.js", "Angular", "Redux", "Context API"],
   },
   {
-    icon: "🔷",
+    icon: DataObjectIcon,
     name: "TypeScript & JavaScript",
     desc: "ES6+, TypeScript, strict mode — clean, type-safe codebases",
     level: 95,
     tags: ["TypeScript", "ES6+", "JS", "jQuery"],
   },
   {
-    icon: "🎨",
+    icon: PaletteIcon,
     name: "CSS & UI Frameworks",
     desc: "Tailwind, SCSS, Material UI, responsive design, Figma handoff",
     level: 96,
     tags: ["Tailwind", "SCSS", "Material UI", "Figma"],
   },
   {
-    icon: "🔗",
+    icon: CableIcon,
     name: "API Integration",
     desc: "REST APIs, WebSockets, JWT authentication, route protection",
     level: 90,
     tags: ["REST APIs", "JWT", "WebSockets", "ASP.NET"],
   },
   {
-    icon: "🛠️",
+    icon: ConstructionIcon,
     name: "Build & DevOps",
     desc: "Webpack, Gulp, Azure DevOps, CI/CD, Git, GitHub, Bitbucket",
     level: 85,
     tags: ["Webpack", "Azure DevOps", "Git", "CI/CD"],
   },
   {
-    icon: "🤖",
+    icon: SmartToyIcon,
     name: "AI Dev Tools",
     desc: "GitHub Copilot, Claude, ChatGPT — for code gen, debugging & docs",
     level: 90,

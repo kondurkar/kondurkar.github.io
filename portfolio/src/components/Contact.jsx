@@ -2,6 +2,9 @@ import { useForm, ValidationError } from "@formspree/react";
 import { ME, FORMSPREE_ID } from "../data/config";
 import { useFadeUp } from "../hooks/useFadeUp";
 import SectionLabel from "./SectionLabel";
+import EmailIcon from "@mui/icons-material/Email";
+import GitHubIcon from "@mui/icons-material/GitHub";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
 
 function InputField({ label, id, type = "text", name, placeholder, errors }) {
   return (
@@ -110,9 +113,9 @@ export default function Contact() {
   const socialRef = useFadeUp();
 
   const SOCIALS = [
-    { label: "Email",    icon: "✉",  href: `mailto:${ME.email}` },
-    { label: "GitHub",   icon: "⌥", href: ME.social.github   },
-    { label: "LinkedIn", icon: "in", href: ME.social.linkedin },
+    { label: "Email",    icon: EmailIcon,    href: `mailto:${ME.email}` },
+    { label: "GitHub",   icon: GitHubIcon,   href: ME.social.github   },
+    { label: "LinkedIn", icon: LinkedInIcon, href: ME.social.linkedin },
   ];
 
   return (
@@ -136,7 +139,7 @@ export default function Contact() {
 
         {/* Socials */}
         <div ref={socialRef} className="fade-up flex justify-center flex-wrap gap-3 mt-8">
-          {SOCIALS.map(({ label, icon, href }) => (
+          {SOCIALS.map(({ label, icon: Icon, href }) => (
             <a
               key={label}
               href={href}
@@ -146,7 +149,7 @@ export default function Contact() {
                          px-5 py-2.5 border border-cyan-500/10 rounded-sm transition-all duration-200
                          hover:text-cyan-400 hover:border-cyan-500/25 hover:bg-cyan-500/4"
             >
-              {icon} {label}
+              <Icon style={{ fontSize: "16px" }} /> {label}
             </a>
           ))}
         </div>

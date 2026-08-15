@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom";
+import BuildIcon from "@mui/icons-material/Build";
+import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
 
 const STATUS_BADGE = {
   "live":        { label: "Live",        cls: "text-emerald-400 bg-emerald-400/10 border-emerald-400/20" },
@@ -6,7 +8,7 @@ const STATUS_BADGE = {
   "coming-soon": { label: "Coming Soon", cls: "text-slate-400   bg-slate-400/10   border-slate-400/20"  },
 };
 
-export default function GameTile({ slug, name, desc, tags, emoji, status, highlight }) {
+export default function GameTile({ slug, name, desc, tags, icon: Icon, status, highlight }) {
   const badge   = STATUS_BADGE[status] ?? STATUS_BADGE["live"];
   const isLive  = status === "live";
 
@@ -27,9 +29,10 @@ export default function GameTile({ slug, name, desc, tags, emoji, status, highli
                               linear-gradient(90deg, rgba(0,200,255,0.04) 1px, transparent 1px)`,
             backgroundSize: "24px 24px",
           }} />
-        <span className="text-[3.5rem] z-10 group-hover:scale-110 transition-transform duration-300 select-none">
-          {emoji}
-        </span>
+        <Icon
+          className="z-10 group-hover:scale-110 transition-transform duration-300"
+          style={{ fontSize: "2.75rem", color: highlight ?? "#00c8ff" }}
+        />
       </div>
 
       {/* Body */}
@@ -67,9 +70,11 @@ export default function GameTile({ slug, name, desc, tags, emoji, status, highli
               ▶ Play Now
             </Link>
           ) : (
-            <div className="flex items-center justify-center font-mono text-[11px]
+            <div className="flex items-center justify-center gap-1.5 font-mono text-[11px]
                             text-slate-400 tracking-widest border border-slate-800 rounded-sm py-2.5 w-full">
-              {status === "wip" ? "🔧 In Progress" : "⏳ Coming Soon"}
+              {status === "wip"
+                ? <><BuildIcon style={{ fontSize: "14px" }} /> In Progress</>
+                : <><HourglassEmptyIcon style={{ fontSize: "14px" }} /> Coming Soon</>}
             </div>
           )}
         </div>

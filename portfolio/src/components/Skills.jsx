@@ -2,7 +2,7 @@ import { SKILLS } from "../data/config";
 import { useFadeUp } from "../hooks/useFadeUp";
 import SectionLabel from "./SectionLabel";
 
-function SkillCard({ icon, name, desc, level, tags }) {
+function SkillCard({ icon: Icon, name, desc, level, tags }) {
   const ref = useFadeUp();
   return (
     <div
@@ -18,7 +18,7 @@ function SkillCard({ icon, name, desc, level, tags }) {
         style={{ background: "linear-gradient(90deg, #00c8ff, #00ff9d)" }}
       />
 
-      <div className="text-[1.75rem] mb-3">{icon}</div>
+      <div className="mb-3"><Icon style={{ fontSize: "1.75rem", color: "#00c8ff" }} /></div>
       <div className="font-display font-semibold text-[15px] text-slate-100 mb-1">{name}</div>
       <p className="text-[13px] text-slate-400 mt-1">{desc}</p>
 

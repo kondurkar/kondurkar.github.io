@@ -5,6 +5,9 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import CursorGlow from "../components/CursorGlow";
 import GameTile from "../components/GameTile";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import BuildIcon from "@mui/icons-material/Build";
+import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
 
 const ALL_TAGS = ["All", ...Array.from(new Set(GAMES.flatMap(g => g.tags)))];
 const ALL_STATUS = ["All", "live", "wip", "coming-soon"];
@@ -56,7 +59,11 @@ export default function GameList() {
                 ${activeStatus === s
                   ? "text-black bg-cyan-400 border-cyan-400"
                   : "text-slate-400 bg-transparent border-cyan-500/15 hover:border-cyan-500/40 hover:text-slate-300"}`}>
-              {s === "All" ? "All" : s === "live" ? "✅ Live" : s === "wip" ? "🔧 In Progress" : "⏳ Coming Soon"}
+              {s === "All" ? "All" : s === "live"
+                ? <span className="inline-flex items-center gap-1"><CheckCircleIcon style={{ fontSize: "13px" }} /> Live</span>
+                : s === "wip"
+                ? <span className="inline-flex items-center gap-1"><BuildIcon style={{ fontSize: "13px" }} /> In Progress</span>
+                : <span className="inline-flex items-center gap-1"><HourglassEmptyIcon style={{ fontSize: "13px" }} /> Coming Soon</span>}
             </button>
           ))}
         </div>

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ME } from "../data/config";
 import { useScrollSpy } from "../hooks/useScrollSpy";
+import EmailIcon from "@mui/icons-material/Email";
 
 const SECTION_IDS = ["about", "skills", "experience", "projects", "games", "blog", "contact"];
 
@@ -148,7 +149,7 @@ export default function Navbar() {
                          font-mono text-[12px] tracking-widest px-5 py-2.5 rounded-sm
                          transition-all duration-200 no-underline w-full justify-center"
             >
-              ✉ {ME.email}
+              <EmailIcon style={{ fontSize: "16px" }} /> {ME.email}
             </a>
           </div>
         </div>
